@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-title size="small">
+      Mode {{ mode.value == 'customer' ? 'Konsumen' : 'Bisnis' }}
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="switchMode()">
+        <ion-icon [name]="mode.icon" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-fab
+    *ngIf="mode.value == 'customer'"
+    vertical="bottom"
+    horizontal="end"
+    slot="fixed"
+  >
+    <ion-fab-button size="small" (click)="showInquiryEditor()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <app-inquiry-list *ngIf="mode.value == 'customer'"></app-inquiry-list>
+  <app-listing-list *ngIf="mode.value == 'business'"></app-listing-list>
+</ion-content>

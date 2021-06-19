@@ -1,0 +1,45 @@
+<ion-list lines="full">
+  <ion-item-divider>
+    <ion-text>Bisnis saya</ion-text>
+    <ion-buttons slot="end">
+      <ion-button
+        size="small"
+        color="primary"
+        mode="ios"
+        (click)="showEditor()"
+      >
+        <ion-icon name="add-outline" slot="start"></ion-icon>
+        <ion-text>Daftarkan</ion-text>
+      </ion-button>
+    </ion-buttons>
+  </ion-item-divider>
+
+  <ng-container *ngIf="listings$ | async as results">
+    <ion-item
+      *ngFor="let item of results"
+      detail="true"
+      [routerLink]="['/listing-inquiry', item.uuid]"
+    >
+      <ion-label class="ion-text-wrap">
+        <div>{{ item.label }}</div>
+        <div [ngStyle]="{ 'margin-top': '2px', 'font-size': '12px' }">
+          <ion-text color="medium" size="small">
+            Kata kunci: {{ item.keyword }}
+          </ion-text>
+        </div>
+      </ion-label>
+
+      <ion-badge slot="end">
+        {{ item?.state?.status_display }}
+      </ion-badge>
+    </ion-item>
+  </ng-container>
+</ion-list>
+
+<ng-container *ngIf="listings$ | async as results">
+  <p *ngIf="results.length == 0" class="ion-text-center">
+    <ion-text color="danger">
+      <small>Belum mendaftarkan bisnis</small>
+    </ion-text>
+  </p>
+</ng-container>

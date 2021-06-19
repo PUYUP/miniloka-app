@@ -1,0 +1,80 @@
+<ng-container *ngIf="(verifycode$ | async).result as verifycode">
+  <p class="ion-no-margin">
+    <ion-text color="dark">
+      Kode verifikasi dikirim ke
+      {{ verifycode.email ? "email" : "nomor ponsel" }} Anda
+    </ion-text>
+  </p>
+
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit(verifycode.token)">
+    <ion-list>
+      <ion-item class="ion-margin-top">
+        <ion-label position="stacked">
+          {{ field == "email" ? "Alamat email" : "Nomor ponsel" }}
+        </ion-label>
+
+        <ion-input
+          [type]="field == 'email' ? 'email' : 'tel'"
+          [formControlName]="field"
+          [value]="value"
+          readonly
+          required
+        ></ion-input>
+
+        <ion-buttons
+          *ngIf="challenge != 'change_msisdn' && challenge != 'change_email'"
+          slot="end"
+        >
+          <ion-button size="small" fill="outline" mode="ios" (click)="reset()">
+            Ganti
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <ion-item class="ion-margin-top">
+        <ion-label position="stacked">Kode verifikasi</ion-label>
+        <ion-input
+          formControlName="passcode"
+          placeholder="Contoh: KLM053"
+          required
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-grid class="ion-margin-top">
+      <ion-row>
+        <ion-col size="6">
+          <ion-button
+            type="button"
+            expand="block"
+            color="dark"
+            fill="clear"
+            (click)="resend()"
+          >
+            Resend kode
+          </ion-button>
+        </ion-col>
+
+        <ion-col size="6">
+          <ion-button
+            type="submit"
+            expand="block"
+            color="primary"
+            [disabled]="formGroup.invalid"
+          >
+            <ng-container *ngIf="verifycodeValidate$ | async as validate">
+              <ion-spinner
+                *ngIf="validate?.status == 'loading'"
+                name="dots"
+              ></ion-spinner>
+
+              <ion-text *ngIf="validate?.status == 'uninitialized'">
+                Verifikasi
+              </ion-text>
+            </ng-container>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ng-container>

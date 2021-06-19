@@ -1,0 +1,22 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-title size="small"> Account </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button mode="ios" color="danger" (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        <ion-text>Keluar</ion-text>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ng-container *ngIf="user$ | async as user">
+    <ng-container *ngIf="user.result">
+      <app-profile></app-profile>
+      <div class="ion-margin-bottom"></div>
+      <app-security></app-security>
+    </ng-container>
+  </ng-container>
+</ion-content>

@@ -1,0 +1,180 @@
+<ng-container *ngIf="inquiry$ | async as inquiry">
+  <div
+    *ngIf="inquiry?.status == 'loading'"
+    class="ion-margin ion-padding ion-text-center"
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ng-container *ngIf="inquiry?.result?.uuid">
+    <ion-card class="ion-no-margin">
+      <ion-card-header [ngStyle]="{ 'padding-bottom': '5px' }">
+        <ion-card-title [ngStyle]="{ 'font-size': '15px' }">
+          <strong>{{ inquiry?.result?.user }}</strong>
+        </ion-card-title>
+
+        <ion-card-subtitle>
+          {{ inquiry?.result?.create_at | date: "dd MMMM YYYY HH:mm" }}
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div>
+          <ion-text
+            color="dark"
+            [innerHTML]="inquiry?.result?.keyword"
+            [ngStyle]="{ 'font-size': '16px' }"
+          ></ion-text>
+        </div>
+
+        <ion-list
+          *ngIf="!sendOffer && inquiry?.result?.newest_offer"
+          lines="full"
+        >
+          <ion-item-divider class="ion-no-padding">
+            <ion-label>Tawaran saat ini</ion-label>
+            <ion-buttons slot="end" (click)="changeOffer()">
+              <ion-button
+                mode="ios"
+                size="small"
+                color="primary"
+                fill="outline"
+              >
+                Rubah tawaran
+              </ion-button>
+            </ion-buttons>
+          </ion-item-divider>
+
+          <ng-container
+            *ngFor="
+              let item of inquiry?.result?.newest_offer?.items;
+              let last = last
+            "
+          >
+            <ion-item
+              lines="{{
+                last && inquiry?.result?.newest_offer?.cost == 0
+                  ? 'none'
+                  : 'full'
+              }}"
+            >
+              <ion-label class="ion-text-wrap">
+                {{ item.inquiry_item }}
+              </ion-label>
+
+              <ion-note slot="end" color="danger">
+                <strong *ngIf="inquiry?.result?.newest_offer?.cost == 0">
+                  Rp {{ item.cost | number }}
+                </strong>
+
+                <strong *ngIf="inquiry?.result?.newest_offer?.cost > 0">
+                  &mdash;
+                </strong>
+              </ion-note>
+            </ion-item>
+          </ng-container>
+
+          <ion-item
+            *ngIf="inquiry?.result?.newest_offer?.cost > 0"
+            lines="none"
+          >
+            <ion-label class="ion-text-wrap"> Tawar semuanya </ion-label>
+            <ion-note slot="end" color="danger">
+              <strong>
+                Rp {{ inquiry?.result?.newest_offer?.cost | number }}
+              </strong>
+            </ion-note>
+          </ion-item>
+        </ion-list>
+
+        <form
+          *ngIf="sendOffer || !inquiry?.result?.newest_offer"
+          [formGroup]="formGroup"
+          (ngSubmit)="onSubmit(inquiry?.result)"
+        >
+          <ion-list lines="full">
+            <ng-container formArrayName="offer_items">
+              <ng-container
+                *ngFor="
+                  let item of inquiry?.result?.items;
+                  let last = last;
+                  let i = index
+                "
+                [formGroupName]="i"
+              >
+                <ion-item lines="full">
+                  <ion-note slot="start" [ngStyle]="{ 'margin-right': '5px' }">
+                    {{ i + 1 }}
+                  </ion-note>
+
+                  <ion-label class="ion-text-wrap">
+                    <div [innerHTML]="item.label"></div>
+                    <ion-input
+                      *ngIf="!offerAll"
+                      formControlName="cost"
+                      class="ion-no-margin ion-no-padding"
+                      placeholder="Nilai penawaran, mis: 2500"
+                      color="danger"
+                      type="number"
+                    ></ion-input>
+                  </ion-label>
+                </ion-item>
+              </ng-container>
+            </ng-container>
+
+            <ion-item lines="full">
+              <ion-checkbox
+                color="primary"
+                slot="start"
+                (ionChange)="offerAllChange()"
+                [(ngModel)]="offerAll"
+                [ngModelOptions]="{ standalone: true }"
+                [value]="true"
+              ></ion-checkbox>
+
+              <ion-label>Semuanya</ion-label>
+            </ion-item>
+
+            <ion-item *ngIf="offerAll" lines="full">
+              <ion-input
+                class="ion-no-margin ion-no-padding"
+                placeholder="Nilai penawaran semua item, mis: 2500"
+                formControlName="offer_cost"
+                color="danger"
+                type="number"
+              ></ion-input>
+            </ion-item>
+          </ion-list>
+
+          <ion-row class="ion-no-padding ion-no-margin">
+            <ion-col size="8">
+              <ion-button
+                fill="clear"
+                size="small"
+                type="submit"
+                [disabled]="formGroup.invalid"
+              >
+                {{
+                  inquiry?.result?.newest_offer
+                    ? "Rubah Tawaran"
+                    : "Kirim Tawaran"
+                }}
+              </ion-button>
+            </ion-col>
+
+            <ion-col *ngIf="inquiry?.result?.newest_offer" size="4">
+              <ion-button
+                size="small"
+                fill="clear"
+                (click)="changeOffer()"
+                expand="block"
+              >
+                Batal
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ng-container>

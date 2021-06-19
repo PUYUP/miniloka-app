@@ -1,0 +1,62 @@
+<ion-content [fullscreen]="true">
+  <ion-grid
+    class="ion-no-padding ion-no-margin"
+    [ngStyle]="{'height': '100vh'}"
+  >
+    <ion-row
+      class="ion-justify-content-center ion-align-items-center"
+      [ngStyle]="{'height': '100%'}"
+    >
+      <ion-col size="9">
+        <div class="ion-text-center">
+          <h1 class="ion-no-margin"><strong>Mini Loka</strong></h1>
+          <p>e-Permintaan Konsumen ke Bisnis Lokal</p>
+
+          <p>
+            <small>
+              <strong>Konsumen</strong> <br />
+              <ion-text color="medium">
+                <i>Posting</i> permintaan. Stop berkeliling ke banyak toko.
+                Tidak perlu menunggu 3 hari karena barang ada disekitar Anda.
+              </ion-text>
+            </small>
+          </p>
+
+          <p>
+            <small>
+              <strong>Bisnis Lokal</strong> <br />
+              <ion-text color="medium">
+                Pantau permintaan calon konsumen disekitar bisnis Anda. Berikan
+                penawaran menarik dan tingkatkan penjualan segera!
+              </ion-text>
+            </small>
+          </p>
+
+          <ion-row class="ion-justify-content-center">
+            <ion-col size="6">
+              <ion-button
+                color="success"
+                expand="block"
+                [routerLink]="['/login']"
+              >
+                <ion-icon name="log-in" slot="start"></ion-icon>
+                <ion-text>Masuk</ion-text>
+              </ion-button>
+            </ion-col>
+
+            <ion-col size="6">
+              <ion-button
+                color="primary"
+                expand="block"
+                [routerLink]="['/register']"
+              >
+                <ion-icon name="person-add" slot="start"></ion-icon>
+                <ion-text>Daftar</ion-text>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

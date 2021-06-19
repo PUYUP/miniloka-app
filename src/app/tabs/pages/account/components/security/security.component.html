@@ -1,0 +1,34 @@
+<ion-card
+  *ngIf="security$ | async as security"
+  class="card-account ion-no-margin"
+>
+  <ion-list lines="none" class="ion-no-margin">
+    <ion-list-header>
+      <ion-label class="ion-text-uppercase">Keamanan</ion-label>
+      <ion-button
+        mode="ios"
+        size="small"
+        fill="outline"
+        class="ion-margin-end"
+        (click)="showEditor()"
+      >
+        Edit
+      </ion-button>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label>Nama pengguna</ion-label>
+      <ion-text>{{ security.username }}</ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Email</ion-label>
+      <ion-text>{{ security.email }}</ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Nomor Ponsel</ion-label>
+      <ion-text>{{ security.msisdn ? security.msisdn : "&mdash;" }}</ion-text>
+    </ion-item>
+  </ion-list>
+</ion-card>

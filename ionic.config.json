@@ -1,5 +1,7 @@
 {
-  "name": "beefix",
-  "integrations": {},
-  "type": "angular"
+  "name": "miniloka",
+  "type": "angular",
+  "integrations": {
+    "cordova": {}
+  }
 }

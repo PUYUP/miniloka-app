@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-title size="small"> Profil </ion-title>
+
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Nama lengkap</ion-label>
+        <ion-input
+          formControlName="first_name"
+          placeholder="Contoh: Ahmad Ibrahim"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item class="ion-margin-top">
+        <ion-label position="stacked">Alamat</ion-label>
+        <ion-textarea
+          formControlName="address"
+          placeholder="Contoh: Jalan lingkaran jaya no 11"
+        ></ion-textarea>
+      </ion-item>
+    </ion-list>
+
+    <ion-button
+      type="submit"
+      color="primary"
+      expand="block"
+      class="ion-margin-top"
+    >
+      Submit
+    </ion-button>
+  </form>
+</ion-content>

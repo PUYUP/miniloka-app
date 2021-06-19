@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title size="small">Rincian Permintaan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <app-detail [uuid]="uuid"></app-detail>
+
+  <br />
+
+  <app-offer-list [uuid]="uuid"></app-offer-list>
+</ion-content>

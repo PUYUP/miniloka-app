@@ -1,0 +1,51 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Nama pengguna / email</ion-label>
+      <ion-input
+        formControlName="username"
+        placeholder="Contoh: joker123"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input
+        type="password"
+        formControlName="password"
+        placeholder="Masukkan password"
+        required
+      ></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-row class="ion-margin-top">
+    <ion-col size="6">
+      <ion-button
+        type="button"
+        expand="block"
+        fill="clear"
+        [routerLink]="['/lost-password']"
+        >Lupa password</ion-button
+      >
+    </ion-col>
+
+    <ion-col size="6">
+      <ion-button
+        type="submit"
+        expand="block"
+        color="success"
+        [disabled]="formGroup.invalid"
+      >
+        <ng-container *ngIf="auth$ | async as auth">
+          <ion-spinner
+            *ngIf="auth?.status == 'loading'"
+            name="dots"
+          ></ion-spinner>
+          <ion-text *ngIf="auth?.status == 'uninitialized'">Submit</ion-text>
+        </ng-container>
+      </ion-button>
+    </ion-col>
+  </ion-row>
+</form>

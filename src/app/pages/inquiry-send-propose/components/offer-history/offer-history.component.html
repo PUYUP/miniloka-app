@@ -1,0 +1,38 @@
+<ng-container *ngIf="histories$ | async as history">
+  <ng-container *ngIf="history?.results.length > 1">
+    <ion-list lines="full" class="ion-margin-top">
+      <ion-item-divider>
+        <ion-label>Riwayat Tawaran</ion-label>
+      </ion-item-divider>
+
+      <ng-container *ngFor="let item of history?.results; let last = last">
+        <ion-item lines="{{ last ? 'none' : 'full' }}">
+          <ion-label>
+            Rp
+            {{ (item?.cost > 0 ? item.cost : item.total_item_cost) | number }}
+            <p
+              class="line"
+              [ngStyle]="{
+                'margin-bottom': '0 !important',
+                'margin-top': '3px',
+                'font-size': '12px'
+              }"
+            >
+              <ion-text color="medium">
+                {{ item.create_at | date: "dd MMMM YYYY HH:mm" }}
+              </ion-text>
+            </p>
+          </ion-label>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data..."
+      >
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-container>
+</ng-container>

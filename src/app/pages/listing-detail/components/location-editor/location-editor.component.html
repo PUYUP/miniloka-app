@@ -1,0 +1,84 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small"> Edit alamat </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <ion-list class="ion-no-padding">
+      <ion-item lines="full" class="mb-3">
+        <ion-label position="floating">Alamat lengkap</ion-label>
+        <ion-textarea
+          formControlName="street_address"
+          placeholder="Contoh: Jalan Biru Kuning No.11"
+        ></ion-textarea>
+      </ion-item>
+
+      <ion-item lines="full" class="mb-3">
+        <ion-label position="floating">Desa / Kelurahan</ion-label>
+        <ion-input
+          formControlName="administrative_area_level_4"
+          placeholder="Contoh: Paal merah"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="full" class="mb-3">
+        <ion-label position="floating">Kecamatan</ion-label>
+        <ion-input
+          formControlName="administrative_area_level_3"
+          placeholder="Contoh: Jambi Selatan"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="full" class="mb-3">
+        <ion-label position="floating">Kota / Kabupaten</ion-label>
+        <ion-input
+          formControlName="administrative_area_level_2"
+          placeholder="Contoh: Muaro Jambi"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="full" class="mb-3">
+        <ion-label position="floating">Provinsi</ion-label>
+        <ion-input
+          formControlName="administrative_area_level_1"
+          placeholder="Contoh: Jambi"
+        ></ion-input>
+      </ion-item>
+
+      <ion-item lines="full" class="mb-3">
+        <ion-label position="floating">Kodepos</ion-label>
+        <ion-input
+          formControlName="postal_code"
+          placeholder="Contoh: 36139"
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-row class="ion-no-padding ion-no-margin ion-margin-top">
+      <ion-col size="7">
+        <ion-button type="button" (click)="addMapMarker()" fill="clear">
+          <ion-icon slot="start" name="map-outline"></ion-icon>
+          {{ selectedLatitude ? "Peta Ditandai" : "Tandai di Peta" }}
+        </ion-button>
+      </ion-col>
+
+      <ion-col size="5" class="ion-text-end">
+        <ion-button
+          type="submit"
+          [disabled]="formGroup.invalid"
+          class="ms-auto"
+        >
+          Simpan
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </form>
+</ion-content>

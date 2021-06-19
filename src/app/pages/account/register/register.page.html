@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title size="small">Daftar</ion-title>
+
+    <ion-buttons slot="end" class="ion-padding-end">
+      <ion-button type="button" size="small" [routerLink]="['/login']">
+        <ion-icon name="log-in" slot="start"></ion-icon>
+        <ion-text>Masuk</ion-text>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ng-container *ngIf="verifycode$ | async as verifycode">
+    <app-boarding-form
+      *ngIf="!verifycode.result?.token"
+      challenge="email_validation"
+    ></app-boarding-form>
+
+    <app-boarding-validation-form
+      *ngIf="verifycode.result?.token && !verifycode.result?.is_verified"
+    ></app-boarding-validation-form>
+
+    <app-register-form
+      *ngIf="verifycode.result?.is_verified"
+    ></app-register-form>
+  </ng-container>
+</ion-content>

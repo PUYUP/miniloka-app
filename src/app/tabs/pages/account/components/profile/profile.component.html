@@ -1,0 +1,29 @@
+<ion-card
+  *ngIf="profile$ | async as profile"
+  class="card-account ion-no-margin"
+>
+  <ion-list lines="none" class="ion-no-margin">
+    <ion-list-header>
+      <ion-label class="ion-text-uppercase">Profil</ion-label>
+      <ion-button
+        mode="ios"
+        size="small"
+        fill="outline"
+        class="ion-margin-end"
+        (click)="showEditor()"
+      >
+        Edit
+      </ion-button>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label>Nama lengkap</ion-label>
+      <ion-text>{{ profile.first_name }}</ion-text>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Alamat</ion-label>
+      <ion-text>{{ profile.address ? profile.address : "&mdash;" }}</ion-text>
+    </ion-item>
+  </ion-list>
+</ion-card>

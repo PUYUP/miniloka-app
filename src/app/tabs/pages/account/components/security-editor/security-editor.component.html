@@ -1,0 +1,72 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-title size="small"> Keamanan </ion-title>
+
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Nama pengguna</ion-label>
+      <ion-input
+        type="text"
+        placeholder="Contoh: jack131"
+        [(ngModel)]="dataCopy.username"
+      ></ion-input>
+
+      <ion-buttons slot="end">
+        <ion-button
+          size="small"
+          (click)="saveChange('username')"
+          [disabled]="dataCopy.username == data.username"
+        >
+          Simpan
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Alamat email</ion-label>
+      <ion-input
+        type="email"
+        placeholder="Contoh: email@saya.com"
+        [(ngModel)]="dataCopy.email"
+      ></ion-input>
+
+      <ion-buttons slot="end">
+        <ion-button
+          size="small"
+          (click)="saveChange('email')"
+          [disabled]="dataCopy.email == data.email"
+        >
+          Simpan
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Nomor ponsel</ion-label>
+      <ion-input
+        type="tel"
+        placeholder="Contoh: 08979614343"
+        [(ngModel)]="dataCopy.msisdn"
+      ></ion-input>
+
+      <ion-buttons slot="end">
+        <ion-button
+          size="small"
+          (click)="saveChange('msisdn')"
+          [disabled]="dataCopy.msisdn == data.msisdn"
+        >
+          Simpan
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+</ion-content>

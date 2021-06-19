@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title size="small">Masuk</ion-title>
+
+    <ion-buttons slot="end" class="ion-padding-end">
+      <ion-button type="button" size="small" [routerLink]="['/register']">
+        <ion-icon name="person-add" slot="start"></ion-icon>
+        <ion-text>Daftar</ion-text>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <app-login-form></app-login-form>
+</ion-content>

@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small">
+      {{ instance ? "Edit" : "Kirim" }} Permintaan
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <app-inquiry-editor
+    [coordinate]="coordinate"
+    [instance]="instance"
+  ></app-inquiry-editor>
+</ion-content>

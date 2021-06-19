@@ -1,0 +1,6 @@
+::ng-deep ion-textarea {
+  min-height: 40px;
+  ::ng-deep textarea {
+    min-height: 40px;
+  }
+}

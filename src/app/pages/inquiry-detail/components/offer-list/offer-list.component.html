@@ -1,0 +1,32 @@
+<ng-container *ngIf="proposes$ | async as propose">
+  <ion-list lines="full">
+    <ng-container *ngFor="let item of propose?.results; let last = last">
+      <ion-item
+        detail
+        lines="{{ last ? 'none' : 'full' }}"
+        [routerLink]="['/propose-detail', item.uuid]"
+        button
+      >
+        <ion-label> {{ item.listing.label }}</ion-label>
+
+        <ion-note slot="end" class="ion-no-margin">
+          <ion-text [ngStyle]="{ 'margin-right': '5px' }">
+            {{ item.distance | number: "1.0-0" }} km
+          </ion-text>
+
+          <ion-text color="danger">
+            Rp {{ item.newest_offer_cost | number }}
+          </ion-text>
+        </ion-note>
+      </ion-item>
+    </ng-container>
+  </ion-list>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ng-container>

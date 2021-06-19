@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title size="small"> Permintaan </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container *ngIf="listing$ | async as listing">
+    <ng-container *ngIf="listing?.uuid">
+      <ion-item lines="full" [ngStyle]="{'padding-top': '5px'}">
+        <label>
+          <div>{{ listing.label }}</div>
+          <div [ngStyle]="{'margin-top': '2px', 'font-size': '12px'}">
+            <ion-text color="medium" size="small">
+              Kata kunci: {{ listing.keyword }}
+            </ion-text>
+          </div>
+        </label>
+
+        <ion-buttons slot="end">
+          <ion-button
+            size="small"
+            mode="ios"
+            color="primary"
+            [routerLink]="['/listing-detail', listing_uuid]"
+          >
+            Edit
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+
+      <div *ngIf="showInquiry" class="ion-padding">
+        <app-inquiry-list-hunt
+          [keyword]="listing.keyword"
+          [listing_uuid]="listing_uuid"
+        ></app-inquiry-list-hunt>
+      </div>
+    </ng-container>
+  </ng-container>
+</ion-content>

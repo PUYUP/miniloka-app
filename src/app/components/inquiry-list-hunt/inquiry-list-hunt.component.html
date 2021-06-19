@@ -1,0 +1,113 @@
+<ng-container *ngIf="inquiries$ | async as data">
+  <ng-container
+    *ngFor="let inquiry of data?.results; let i = index; let last = last"
+  >
+    <ion-card class="ion-no-margin {{ !last ? 'ion-margin-bottom' : '' }}">
+      <ion-card-header [ngStyle]="{ 'padding-bottom': '5px' }">
+        <ion-card-title [ngStyle]="{ 'font-size': '15px' }">
+          <strong>{{ inquiry.user }}</strong>
+        </ion-card-title>
+
+        <ion-card-subtitle>
+          {{ inquiry.create_at | date: "dd MMMM YYYY HH:mm" }}
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div>
+          <ion-text
+            color="dark"
+            [innerHTML]="inquiry.keyword"
+            [ngStyle]="{ 'font-size': '16px' }"
+          ></ion-text>
+        </div>
+
+        <ion-list>
+          <ion-item-divider class="ion-no-padding">Rincian</ion-item-divider>
+          <ng-container
+            *ngFor="let item of inquiry.items; let last = last; let i = index"
+          >
+            <ion-item lines="full">
+              <ion-note slot="start" [ngStyle]="{ 'margin-right': '5px' }">
+                {{ i + 1 }}
+              </ion-note>
+
+              <ion-label
+                [innerHTML]="item.label"
+                class="ion-text-wrap"
+              ></ion-label>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+
+        <ion-row class="ion-no-padding ion-no-margin ion-align-items-center">
+          <ion-col size="7">
+            <ion-buttons>
+              <ion-button
+                [routerLink]="[
+                  '/listing-inquiry',
+                  listing_uuid,
+                  'propose',
+                  inquiry.uuid
+                ]"
+                mode="ios"
+                color="primary"
+              >
+                <ion-icon name="reader-outline" slot="start"></ion-icon>
+                <ion-text>
+                  {{
+                    inquiry.is_offered
+                      ? "Rp " +
+                        (inquiry.newest_offer_cost | number) +
+                        " &nbsp;&nbsp;Rubah"
+                      : "Kirim Tawaran"
+                  }}
+                </ion-text>
+              </ion-button>
+            </ion-buttons>
+          </ion-col>
+
+          <ion-col size="5" class="ion-text-end">
+            <ion-icon
+              name="location-outline"
+              [ngStyle]="{
+                position: 'relative',
+                top: '2px',
+                'margin-right': '2px'
+              }"
+            ></ion-icon>
+            <ion-text>{{ inquiry.distance | number: "1.0-1" }} km</ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ng-container>
+
+<ng-container *ngIf="inquiries$ | async as data">
+  <p
+    *ngIf="data?.status == 'loaded' && data?.results.length == 0"
+    class="ion-text-center"
+  >
+    <ion-text color="danger">
+      <small>
+        Permintaan dengan kata kunci "{{ keyword }}" tidak ditemukan.
+      </small>
+    </ion-text>
+  </p>
+
+  <div
+    *ngIf="data?.status == 'loading'"
+    class="ion-text-center ion-margin ion-padding"
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+</ng-container>
+
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Loading more data..."
+  >
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>

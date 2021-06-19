@@ -1,0 +1,62 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Nama bisnis</ion-label>
+      <ion-input
+        formControlName="label"
+        placeholder="Contoh: Kemplang Uni Desi"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Kata kunci</ion-label>
+      <ion-textarea
+        [autoGrow]="true"
+        formControlName="keyword"
+        placeholder="Contoh: motor bengkel servis"
+      ></ion-textarea>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Email</ion-label>
+      <ion-input
+        type="email"
+        formControlName="email"
+        placeholder="Contoh: keripik.uni@gmail.com"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Telepon</ion-label>
+      <ion-input
+        type="tel"
+        formControlName="telephone"
+        placeholder="Contoh: 0741999555"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">WhatsApp</ion-label>
+      <ion-input
+        type="tel"
+        formControlName="whatsapp"
+        placeholder="Contoh: 08979614343"
+      ></ion-input>
+    </ion-item>
+
+    <!--
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Keterangan (tidak wajib)</ion-label>
+      <ion-textarea
+        [autoGrow]="true"
+        formControlName="description"
+        placeholder="Contoh: Menyediakan beragam kemplang pedas manis"
+      ></ion-textarea>
+    </ion-item>
+    -->
+  </ion-list>
+
+  <ion-button expand="block" type="submit" [disabled]="formGroup.invalid">
+    Submit
+  </ion-button>
+</form>

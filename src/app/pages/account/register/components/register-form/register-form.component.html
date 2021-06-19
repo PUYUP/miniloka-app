@@ -1,0 +1,73 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <p>Selesaikan pendaftaran</p>
+
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Nama lengkap</ion-label>
+      <ion-input
+        formControlName="first_name"
+        placeholder="Contoh: Barack Obama"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Alamat email</ion-label>
+      <ion-input
+        type="email"
+        formControlName="email"
+        placeholder="Contoh: baracko@gmail.com"
+        required
+        readonly
+      ></ion-input>
+
+      <ion-buttons slot="end">
+        <ion-button size="small" fill="outline" mode="ios" (click)="reset()">
+          Ganti
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Password</ion-label>
+      <ion-input
+        [type]="showedPassword ? 'text' : 'password'"
+        formControlName="password"
+        placeholder="Masukkan password"
+        required
+      ></ion-input>
+
+      <ion-buttons slot="end">
+        <ion-button (click)="showPassword()">
+          <ion-icon
+            [name]="showedPassword ? 'eye-off-outline' : 'eye-outline'"
+            slot="icon-only"
+          ></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked">Ulangi password</ion-label>
+      <ion-input
+        [type]="showedPassword ? 'text' : 'password'"
+        formControlName="retype_password"
+        placeholder="Masukkan password"
+        required
+      ></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button
+    type="submit"
+    expand="block"
+    color="primary"
+    class="ion-margin-top"
+    [disabled]="formGroup.invalid"
+  >
+    <ng-container *ngIf="auth$ | async as auth">
+      <ion-spinner *ngIf="auth?.status == 'loading'" name="dots"></ion-spinner>
+      <ion-text *ngIf="auth?.status == 'uninitialized'">Submit</ion-text>
+    </ng-container>
+  </ion-button>
+</form>

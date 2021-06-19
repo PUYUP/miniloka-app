@@ -1,0 +1,29 @@
+<form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <ion-list>
+    <ion-item>
+      <ion-label position="stacked">Masukkan email Anda</ion-label>
+      <ion-input
+        type="email"
+        formControlName="email"
+        placeholder="Contoh: barack_obama@gmail.com"
+        required
+      ></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-button
+    type="submit"
+    expand="block"
+    color="primary"
+    class="ion-margin-top"
+    [disabled]="formGroup.invalid"
+  >
+    <ng-container *ngIf="verifycode$ | async as verifycode">
+      <ion-spinner
+        *ngIf="verifycode?.status == 'loading'"
+        name="dots"
+      ></ion-spinner>
+      <ion-text *ngIf="verifycode?.status == 'uninitialized'">Submit</ion-text>
+    </ng-container>
+  </ion-button>
+</form>

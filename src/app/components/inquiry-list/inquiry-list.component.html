@@ -1,0 +1,89 @@
+<ng-container *ngIf="inquiries$ | async as data">
+  <ng-container *ngIf="data?.status == 'loaded'">
+    <ng-container
+      *ngFor="let inquiry of data?.results; let i = index; let last = last"
+    >
+      <ion-card class="ion-no-margin {{ !last ? 'ion-margin-bottom' : '' }}">
+        <ion-card-header [ngStyle]="{ 'padding-bottom': '5px' }">
+          <ion-card-subtitle>
+            {{ inquiry.create_at | date: "dd MMMM YYYY HH:mm" }}
+          </ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          <div>
+            <ion-text
+              color="dark"
+              [innerHTML]="inquiry.keyword"
+              [ngStyle]="{ 'font-size': '16px' }"
+            ></ion-text>
+          </div>
+
+          <ion-list>
+            <ion-item-divider class="ion-no-padding">Rincian</ion-item-divider>
+            <ng-container
+              *ngFor="let item of inquiry.items; let last = last; let i = index"
+            >
+              <ion-item lines="full">
+                <ion-note slot="start" [ngStyle]="{ 'margin-right': '5px' }">
+                  {{ i + 1 }}
+                </ion-note>
+
+                <ion-label
+                  [innerHTML]="item.label"
+                  class="ion-text-wrap"
+                ></ion-label>
+              </ion-item>
+            </ng-container>
+          </ion-list>
+
+          <ion-buttons>
+            <ion-button [routerLink]="['/inquiry-detail', inquiry?.uuid]">
+              <ion-icon
+                name="flame-outline"
+                slot="start"
+                color="danger"
+              ></ion-icon>
+
+              <ion-text color="medium">
+                {{ inquiry?.propose_count ? inquiry?.propose_count : 0 }}
+                penawaran
+              </ion-text>
+            </ion-button>
+
+            <ion-button (click)="showTool(inquiry)" class="ion-margin-left">
+              <ion-icon name="ellipsis-horizontal" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-card-content>
+      </ion-card>
+    </ng-container>
+  </ng-container>
+
+  <div
+    *ngIf="data?.status == 'loading'"
+    class="ion-padding ion-margin ion-text-center"
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <p
+    *ngIf="data?.status == 'loaded' && data?.results.length == 0"
+    class="ion-text-center"
+  >
+    <ion-text color="danger">
+      <small>
+        Belum ada permintaan. <br />
+        Tap tombol '+' untuk membuatnya.
+      </small>
+    </ion-text>
+  </p>
+</ng-container>
+
+<ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+  <ion-infinite-scroll-content
+    loadingSpinner="bubbles"
+    loadingText="Loading more data..."
+  >
+  </ion-infinite-scroll-content>
+</ion-infinite-scroll>

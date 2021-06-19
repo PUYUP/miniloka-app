@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+
+    <ion-title size="small">Kirim Penawaran</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <app-propose-editor
+    [inquiry_uuid]="inquiry_uuid"
+    [listing_uuid]="listing_uuid"
+  ></app-propose-editor>
+
+  <app-offer-history
+    [inquiry_uuid]="inquiry_uuid"
+    [listing_uuid]="listing_uuid"
+  ></app-offer-history>
+</ion-content>
