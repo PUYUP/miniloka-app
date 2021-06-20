@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "mini-loka": {
+      "hosting": {
+        "app": [
+          "mini-loka"
+        ]
+      }
+    }
+  }
+}

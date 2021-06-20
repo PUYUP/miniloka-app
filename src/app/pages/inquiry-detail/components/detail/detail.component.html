@@ -1,4 +1,11 @@
 <ng-container *ngIf="inquiry$ | async as inquiry">
+  <div
+    *ngIf="inquiry?.status == 'loading'"
+    class="ion-padding ion-margin ion-text-center"
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+
   <ng-container *ngIf="inquiry?.result?.uuid">
     <ion-card class="ion-no-margin">
       <ion-card-header [ngStyle]="{ 'padding-bottom': '5px' }">

@@ -2,11 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 import {
   LoginCredential,
   Token,
 } from 'src/app/store/interfaces/auth.interfaces';
 import { environment } from 'src/environments/environment';
+import { PersonService } from '../person/person.service';
 
 const CREDENTIAL = '@credential';
 const TOKEN = '@token';
@@ -16,7 +18,7 @@ const USER = '@user';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private firebaseX: FirebaseX) {}
 
   public storeCredential(credential: any) {
     localStorage.setItem(CREDENTIAL, JSON.stringify(credential));
@@ -63,6 +65,9 @@ export class AuthService {
 
   public storeUser(user: any) {
     localStorage.setItem(USER, JSON.stringify(user));
+
+    // generate and save fcm token
+    this.generateFcmToken();
   }
 
   // LOGIN
@@ -102,5 +107,57 @@ export class AuthService {
         credential
       )
       .pipe(map((response: any) => response));
+  }
+
+  /**
+   * Save user meta
+   */
+  async doSaveUserMeta(meta = {}) {
+    let url =
+      environment.baseUrl +
+      '/api/person/v1/users/' +
+      this.user.uuid +
+      '/metas/';
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.token?.access}`,
+      },
+      body: JSON.stringify(meta),
+    });
+
+    return response.json();
+  }
+
+  /**
+   * Generate fcm token
+   */
+  public generateFcmToken() {
+    this.firebaseX
+      .getToken()
+      .then((token) => {
+        let context = {
+          meta_key: 'fcm_token',
+          meta_value: token,
+        };
+
+        this.doSaveUserMeta(context).then((data) => {
+          // console.log(data);
+        });
+      }) // save the token server-side and use it to push notifications to this device
+      .catch((error) => console.error('Error getting token', error));
+
+    this.firebaseX.onTokenRefresh().subscribe((token: string) => {
+      let context = {
+        meta_key: 'fcm_token',
+        meta_value: token,
+      };
+
+      this.doSaveUserMeta(context).then((data) => {
+        // console.log(data);
+      });
+    });
   }
 }

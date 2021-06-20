@@ -19,10 +19,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AppReducers } from './store/reducers';
 
+import { FirebaseX } from '@ionic-native/firebase-x/ngx';
 import localeId from '@angular/common/locales/id';
 import { DEFAULT_TIMEOUT, HTTPInterceptor } from './http.interceptors';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './store/effects';
+
 registerLocaleData(localeId, 'id');
 
 @NgModule({
@@ -45,6 +47,7 @@ registerLocaleData(localeId, 'id');
     AndroidPermissions,
     Geolocation,
     LocationAccuracy,
+    FirebaseX,
     {
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy,

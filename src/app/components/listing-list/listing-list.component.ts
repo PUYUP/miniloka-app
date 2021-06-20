@@ -56,4 +56,8 @@ export class ListingListComponent implements OnInit {
   showEditor() {
     this.presentEdtitor();
   }
+
+  refresh() {
+    this.store.dispatch(Get());
+  }
 }

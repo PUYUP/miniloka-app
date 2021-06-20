@@ -9,24 +9,28 @@
         <tr>
           <td>Status</td>
           <td class="ion-padding-start">
-            {{ listing?.state?.status_display }}
+            {{ listing?.result?.state?.status_display }}
           </td>
         </tr>
 
         <tr>
           <td>Nama</td>
-          <td class="ion-padding-start">{{ listing.label }}</td>
+          <td class="ion-padding-start">{{ listing?.result?.label }}</td>
         </tr>
 
         <tr>
           <td>Kata kunci</td>
-          <td class="ion-padding-start">{{ listing.keyword }}</td>
+          <td class="ion-padding-start">{{ listing?.result?.keyword }}</td>
         </tr>
 
         <tr>
           <td>Email</td>
           <td class="ion-padding-start">
-            {{ listing.contact?.email ? listing.contact?.email : "&mdash;" }}
+            {{
+              listing?.result?.contact?.email
+                ? listing?.result?.contact?.email
+                : "&mdash;"
+            }}
           </td>
         </tr>
 
@@ -34,8 +38,8 @@
           <td>Telepon</td>
           <td class="ion-padding-start">
             {{
-              listing.contact?.telephone
-                ? listing.contact?.telephone
+              listing?.result?.contact?.telephone
+                ? listing?.result?.contact?.telephone
                 : "&mdash;"
             }}
           </td>
@@ -45,7 +49,9 @@
           <td>WhatsApp</td>
           <td class="ion-padding-start">
             {{
-              listing.contact?.whatsapp ? listing.contact?.whatsapp : "&mdash;"
+              listing?.result?.contact?.whatsapp
+                ? listing?.result?.contact?.whatsapp
+                : "&mdash;"
             }}
           </td>
         </tr>
@@ -54,7 +60,7 @@
         <tr>
           <td>Keterangan</td>
           <td class="ion-padding-start">
-            {{ listing.description ? listing.description : "&mdash;" }}
+            {{ listing?.result?.description ? listing?.result?.description : "&mdash;" }}
           </td>
         </tr>
         -->
@@ -64,7 +70,7 @@
         size="small"
         mode="ios"
         class="ion-margin-top"
-        (click)="editSummary(listing)"
+        (click)="editSummary(listing?.result)"
       >
         Edit
       </ion-button>
@@ -82,8 +88,8 @@
           <td>Alamat</td>
           <td class="ion-padding-start">
             {{
-              listing?.location?.street_address
-                ? listing?.location?.street_address
+              listing?.result?.location?.street_address
+                ? listing?.result?.location?.street_address
                 : "&mdash;"
             }}
           </td>
@@ -93,8 +99,8 @@
           <td>Desa / Kelurahan</td>
           <td class="ion-padding-start">
             {{
-              listing?.location?.administrative_area_level_4
-                ? listing?.location?.administrative_area_level_4
+              listing?.result?.location?.administrative_area_level_4
+                ? listing?.result?.location?.administrative_area_level_4
                 : "&mdash;"
             }}
           </td>
@@ -104,8 +110,8 @@
           <td>Kecamatan</td>
           <td class="ion-padding-start">
             {{
-              listing?.location?.administrative_area_level_3
-                ? listing?.location?.administrative_area_level_3
+              listing?.result?.location?.administrative_area_level_3
+                ? listing?.result?.location?.administrative_area_level_3
                 : "&mdash;"
             }}
           </td>
@@ -115,8 +121,8 @@
           <td>Kota / Kabupaten</td>
           <td class="ion-padding-start">
             {{
-              listing?.location?.administrative_area_level_2
-                ? listing?.location?.administrative_area_level_2
+              listing?.result?.location?.administrative_area_level_2
+                ? listing?.result?.location?.administrative_area_level_2
                 : "&mdash;"
             }}
           </td>
@@ -126,8 +132,8 @@
           <td>Provinsi</td>
           <td class="ion-padding-start">
             {{
-              listing?.location?.administrative_area_level_1
-                ? listing?.location?.administrative_area_level_1
+              listing?.result?.location?.administrative_area_level_1
+                ? listing?.result?.location?.administrative_area_level_1
                 : "&mdash;"
             }}
           </td>
@@ -137,8 +143,8 @@
           <td>Kodepos</td>
           <td class="ion-padding-start">
             {{
-              listing?.location?.postal_code
-                ? listing?.location?.postal_code
+              listing?.result?.location?.postal_code
+                ? listing?.result?.location?.postal_code
                 : "&mdash;"
             }}
           </td>
@@ -148,8 +154,8 @@
           <td>Latitude</td>
           <td class="ion-padding-start">
             {{
-              listing?.location?.latitude
-                ? listing?.location?.latitude
+              listing?.result?.location?.latitude
+                ? listing?.result?.location?.latitude
                 : "&mdash;"
             }}
           </td>
@@ -159,8 +165,8 @@
           <td>Longitude</td>
           <td class="ion-padding-start">
             {{
-              listing?.location?.longitude
-                ? listing?.location?.longitude
+              listing?.result?.location?.longitude
+                ? listing?.result?.location?.longitude
                 : "&mdash;"
             }}
           </td>
@@ -171,7 +177,7 @@
         size="small"
         mode="ios"
         class="ion-margin-top"
-        (click)="editAddress(listing)"
+        (click)="editAddress(listing?.result)"
       >
         Edit
       </ion-button>
@@ -182,7 +188,7 @@
     expand="block"
     color="danger"
     class="ion-margin-top"
-    (click)="delete(listing)"
+    (click)="delete(listing?.result)"
   >
     Hapus
   </ion-button>

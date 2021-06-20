@@ -29,7 +29,9 @@
           <ion-item>
             <ion-label class="ion-text-wrap">
               {{ item.inquiry_item }}
+              <p *ngIf="item.description" [innerHTML]="item.description"></p>
             </ion-label>
+
             <ion-note slot="end" color="danger">
               <strong *ngIf="propose?.result?.newest_offer?.cost == 0">
                 Rp {{ item.cost | number }}
@@ -43,7 +45,14 @@
         </ng-container>
 
         <ion-item *ngIf="propose?.result?.newest_offer?.cost > 0">
-          <ion-label class="ion-text-wrap"> Ditawar semuanya </ion-label>
+          <ion-label class="ion-text-wrap">
+            Ditawar semuanya
+            <p
+              *ngIf="propose?.result?.newest_offer?.description"
+              [innerHTML]="propose?.result?.newest_offer?.description"
+            ></p>
+          </ion-label>
+
           <ion-note slot="end" color="danger">
             <strong>
               Rp {{ propose?.result?.newest_offer?.cost | number }}
@@ -93,21 +102,6 @@
                 <td class="ion-padding-start">
                   {{ propose?.result?.listing?.contact?.whatsapp ?
                   propose?.result?.listing?.contact?.whatsapp : "&mdash;" }}
-
-                  <a
-                    *ngIf="propose?.result?.listing?.contact?.whatsapp"
-                    ion-button
-                    mode="ios"
-                    size="small"
-                    href="whatsapp//send?phone={{ whatsapp_number }}"
-                    class="ion-margin-start"
-                  >
-                    <ion-icon
-                      name="logo-whatsapp"
-                      [ngStyle]="{'margin-right': '5px', 'position': 'relative', 'top': '1px'}"
-                    ></ion-icon>
-                    <ion-text>Buka WhatsApp</ion-text>
-                  </a>
                 </td>
               </tr>
             </table>

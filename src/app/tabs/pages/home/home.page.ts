@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { AppState } from 'src/app/store/reducers';
 import { SelectInquiries } from 'src/app/store/selectors/inquiry.selectors';
+import { SelectListings } from 'src/app/store/selectors/listing.selectors';
 
 @Component({
   selector: 'app-home',
@@ -27,12 +28,14 @@ export class HomePage {
   @ViewChild(InquiryListComponent) inquiryListComponent: InquiryListComponent;
   @ViewChild(ListingListComponent) listingListComponent: ListingListComponent;
 
+  inquiries$: Observable<any>;
+  listings$: Observable<any>;
+
   actionSheetIsOpen: boolean = false;
   inquiryEditorIsPresent: boolean = false;
 
   mode = { icon: 'bag-outline', value: 'customer' };
   locationCoords: any;
-  inquiries$: Observable<any>;
   refreshEvent: any;
 
   constructor(
@@ -79,6 +82,12 @@ export class HomePage {
     // from inquiry list load
     this.inquiries$ = this.store.pipe(select(SelectInquiries));
     this.inquiries$.subscribe((state: any) => {
+      if (this.refreshEvent) this.refreshEvent.target.complete();
+    });
+
+    // from listing list load
+    this.listings$ = this.store.pipe(select(SelectListings));
+    this.listings$.subscribe((state: any) => {
       if (this.refreshEvent) this.refreshEvent.target.complete();
     });
   }
@@ -203,7 +212,7 @@ export class HomePage {
   // SELECT MODE
   async presentSelectMode() {
     const actionSheet = await this.actionSheetController.create({
-      header: 'Lihat Sebagai',
+      header: 'Ganti Mode',
       buttons: [
         {
           text: 'Konsumen',
@@ -253,12 +262,14 @@ export class HomePage {
   // END
 
   showInquiryEditor() {
-    // this.presentLoading('Meminta lokasi...');
-    this.presentInquiryEditor();
+    this.presentLoading('Meminta lokasi...');
+    // this.presentInquiryEditor();
   }
 
   doRefresh(event: any) {
     this.refreshEvent = event;
-    this.inquiryListComponent.refresh();
+
+    if (this.inquiryListComponent) this.inquiryListComponent.refresh();
+    if (this.listingListComponent) this.listingListComponent.refresh();
   }
 }

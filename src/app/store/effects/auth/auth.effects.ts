@@ -5,6 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { PersonService } from 'src/app/services/person/person.service';
 import {
   Login,
   LoginFailure,
@@ -23,6 +24,7 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
+    private personService: PersonService,
     private router: Router,
     public toastController: ToastController
   ) {}
@@ -60,10 +62,11 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(LoginSuccess),
-        tap((action) => {
+        map((action) => {
           this.authService.storeToken(action.result.token);
           this.authService.storeUser(action.result.user);
 
+          // back to home
           this.router.navigate([''], { replaceUrl: true });
         })
       ),

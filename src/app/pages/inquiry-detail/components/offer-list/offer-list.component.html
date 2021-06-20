@@ -1,4 +1,11 @@
 <ng-container *ngIf="proposes$ | async as propose">
+  <div
+    *ngIf="propose?.status == 'loading'"
+    class="ion-padding ion-margin ion-text-center"
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+
   <ion-list lines="full">
     <ng-container *ngFor="let item of propose?.results; let last = last">
       <ion-item

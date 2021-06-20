@@ -6,13 +6,13 @@ export const listingState = createFeatureSelector<ListingState>('listing');
 export const SelectListing = createSelector(
   listingState,
   (state: ListingState) => {
-    return state.result;
+    return state;
   }
 );
 
 export const SelectListings = createSelector(
   listingState,
-  (state: ListingState) => state.results
+  (state: ListingState) => state
 );
 
 export const RetrieveListing = createSelector(
@@ -21,7 +21,7 @@ export const RetrieveListing = createSelector(
     if (state.results.length > 0) {
       return state.results.find((d: any) => d.uuid == props?.uuid);
     } else {
-      return state.result;
+      return state;
     }
   }
 );

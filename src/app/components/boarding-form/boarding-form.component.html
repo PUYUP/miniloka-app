@@ -23,7 +23,7 @@
         *ngIf="verifycode?.status == 'loading'"
         name="dots"
       ></ion-spinner>
-      <ion-text *ngIf="verifycode?.status == 'uninitialized'">Submit</ion-text>
+      <ion-text *ngIf="verifycode?.status != 'loading'">Submit</ion-text>
     </ng-container>
   </ion-button>
 </form>

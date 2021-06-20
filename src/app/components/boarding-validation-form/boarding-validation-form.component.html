@@ -68,7 +68,7 @@
                 name="dots"
               ></ion-spinner>
 
-              <ion-text *ngIf="validate?.status == 'uninitialized'">
+              <ion-text *ngIf="validate?.status != 'loading'">
                 Verifikasi
               </ion-text>
             </ng-container>

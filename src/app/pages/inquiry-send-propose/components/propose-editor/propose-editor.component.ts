@@ -62,7 +62,8 @@ export class ProposeEditorComponent implements OnInit {
 
           setTimeout(() => {
             this.formGroup.patchValue({
-              offer_cost: this.newestOffer?.cost,
+              cost: this.newestOffer?.cost > 0 ? this.newestOffer?.cost : '',
+              description: this.newestOffer?.description,
             });
           });
         }
@@ -76,7 +77,11 @@ export class ProposeEditorComponent implements OnInit {
 
           let o = this.fb.group({
             inquiry_item: [item?.uuid],
-            cost: [offerItem ? offerItem.cost : '', [Validators.required]],
+            cost: [
+              offerItem ? (offerItem.cost > 0 ? offerItem.cost : '') : '',
+              [Validators.required],
+            ],
+            description: [offerItem ? offerItem.description : ''],
           });
 
           let index = this.offer_items().value.findIndex(
@@ -94,7 +99,8 @@ export class ProposeEditorComponent implements OnInit {
     this.formGroup = this.fb.group({
       inquiry: [this.inquiry_uuid, [Validators.required]],
       offer_items: this.fb.array([]),
-      offer_cost: [''],
+      cost: [''],
+      description: [''],
     });
   }
 
@@ -103,18 +109,13 @@ export class ProposeEditorComponent implements OnInit {
   }
 
   offerAllChange() {
-    // this.offer_items().reset();
-    // this.formGroup.controls['offer_cost'].reset();
-
     if (this.offerAll) {
       for (let index in this.offer_items().controls) {
         this.offer_items().controls[index].get('cost').clearValidators();
         this.offer_items().controls[index].get('cost').updateValueAndValidity();
       }
 
-      this.formGroup.controls['offer_cost'].setValidators([
-        Validators.required,
-      ]);
+      this.formGroup.controls['cost'].setValidators([Validators.required]);
     } else {
       for (let index in this.offer_items().controls) {
         this.offer_items()
@@ -123,10 +124,10 @@ export class ProposeEditorComponent implements OnInit {
         this.offer_items().controls[index].get('cost').updateValueAndValidity();
       }
 
-      this.formGroup.controls['offer_cost'].clearValidators();
+      this.formGroup.controls['cost'].clearValidators();
     }
 
-    this.formGroup.controls['offer_cost'].updateValueAndValidity();
+    this.formGroup.controls['cost'].updateValueAndValidity();
   }
 
   onSubmit(inquiry: any) {
@@ -135,7 +136,10 @@ export class ProposeEditorComponent implements OnInit {
     let offer_items = this.formGroup.value.offer_items.map((item: any) => {
       let x = { ...item };
 
-      if (this.offerAll) x.cost = 0;
+      if (this.offerAll) {
+        x.cost = 0;
+        x.description = '';
+      }
 
       i++;
       return x;
@@ -149,14 +153,13 @@ export class ProposeEditorComponent implements OnInit {
         longitude: 1.345,
       }, */
       offer: {
-        cost: !this.offerAll ? 0 : this.formGroup.value.offer_cost,
+        cost: !this.offerAll ? 0 : this.formGroup.value.cost,
+        description: !this.offerAll ? '' : this.formGroup.value.description,
       },
       offer_items: offer_items,
     };
 
     this.store.dispatch(Create({ data: data }));
-    this.presentToast('Tawaran terkirim');
-
     this.sendOffer = false;
   }
 

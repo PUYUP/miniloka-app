@@ -14,13 +14,35 @@
   </ion-refresher>
 
   <ng-container *ngIf="listing$ | async as listing">
-    <ng-container *ngIf="listing?.uuid">
+    <div
+      *ngIf="listing?.status == 'loading'"
+      class="ion-padding ion-margin ion-text-center"
+    >
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <ng-container *ngIf="listing?.result?.uuid && listing?.status == 'loaded'">
+      <ion-item
+        *ngIf="listing?.result?.state?.status == 'pending'"
+        color="warning"
+      >
+        <ion-label class="ion-text-wrap">
+          Sedang diverifikasi 1 - 3 hari kerja
+          <p class="line">
+            <ion-text>
+              Untuk mempercepat verifikasi pastikan alamat bisnis dan kontak
+              yang diberikan bisa dihubungi.
+            </ion-text>
+          </p>
+        </ion-label>
+      </ion-item>
+
       <ion-item lines="full" [ngStyle]="{'padding-top': '5px'}">
         <label>
-          <div>{{ listing.label }}</div>
+          <div>{{ listing.result?.label }}</div>
           <div [ngStyle]="{'margin-top': '2px', 'font-size': '12px'}">
             <ion-text color="medium" size="small">
-              Kata kunci: {{ listing.keyword }}
+              Kata kunci: {{ listing.result?.keyword }}
             </ion-text>
           </div>
         </label>
@@ -39,7 +61,7 @@
 
       <div *ngIf="showInquiry" class="ion-padding">
         <app-inquiry-list-hunt
-          [keyword]="listing.keyword"
+          [keyword]="listing.result?.keyword"
           [listing_uuid]="listing_uuid"
         ></app-inquiry-list-hunt>
       </div>

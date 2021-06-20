@@ -14,9 +14,9 @@
     </ion-buttons>
   </ion-item-divider>
 
-  <ng-container *ngIf="listings$ | async as results">
+  <ng-container *ngIf="listings$ | async as listing">
     <ion-item
-      *ngFor="let item of results"
+      *ngFor="let item of listing?.results"
       detail="true"
       [routerLink]="['/listing-inquiry', item.uuid]"
     >
@@ -36,8 +36,18 @@
   </ng-container>
 </ion-list>
 
-<ng-container *ngIf="listings$ | async as results">
-  <p *ngIf="results.length == 0" class="ion-text-center">
+<ng-container *ngIf="listings$ | async as listing">
+  <div
+    *ngIf="listing?.status == 'loading'"
+    class="ion-padding ion-margin ion-text-center"
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <p
+    *ngIf="listing?.results.length == 0 && listing?.status == 'loaded'"
+    class="ion-text-center"
+  >
     <ion-text color="danger">
       <small>Belum mendaftarkan bisnis</small>
     </ion-text>

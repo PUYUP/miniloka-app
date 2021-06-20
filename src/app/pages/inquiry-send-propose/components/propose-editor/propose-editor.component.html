@@ -60,6 +60,12 @@
             >
               <ion-label class="ion-text-wrap">
                 {{ item.inquiry_item }}
+
+                <p
+                  *ngIf="item.description"
+                  class="line"
+                  [innerHTML]="item.description"
+                ></p>
               </ion-label>
 
               <ion-note slot="end" color="danger">
@@ -78,7 +84,16 @@
             *ngIf="inquiry?.result?.newest_offer?.cost > 0"
             lines="none"
           >
-            <ion-label class="ion-text-wrap"> Tawar semuanya </ion-label>
+            <ion-label class="ion-text-wrap">
+              Tawar semuanya
+
+              <p
+                *ngIf="inquiry?.result?.newest_offer?.description"
+                class="line"
+                [innerHTML]="inquiry?.result?.newest_offer?.description"
+              ></p>
+            </ion-label>
+
             <ion-note slot="end" color="danger">
               <strong>
                 Rp {{ inquiry?.result?.newest_offer?.cost | number }}
@@ -103,22 +118,49 @@
                 [formGroupName]="i"
               >
                 <ion-item lines="full">
-                  <ion-note slot="start" [ngStyle]="{ 'margin-right': '5px' }">
+                  <ion-note
+                    *ngIf="offerAll"
+                    slot="start"
+                    [ngStyle]="{ 'margin-right': '5px' }"
+                  >
                     {{ i + 1 }}
                   </ion-note>
 
-                  <ion-label class="ion-text-wrap">
-                    <div [innerHTML]="item.label"></div>
+                  <ion-badge
+                    *ngIf="!offerAll"
+                    slot="start"
+                    [ngStyle]="{ 'margin-right': '5px' }"
+                  >
+                    {{ i + 1 }}
+                  </ion-badge>
+
+                  <ion-label
+                    class="ion-text-wrap"
+                    [innerHTML]="item.label"
+                  ></ion-label>
+                </ion-item>
+
+                <ng-container *ngIf="!offerAll">
+                  <ion-item lines="full">
+                    <ion-label position="stacked" class="ion-text-wrap">
+                      Penawaran
+                    </ion-label>
+
                     <ion-input
-                      *ngIf="!offerAll"
                       formControlName="cost"
                       class="ion-no-margin ion-no-padding"
                       placeholder="Nilai penawaran, mis: 2500"
                       color="danger"
                       type="number"
                     ></ion-input>
-                  </ion-label>
-                </ion-item>
+
+                    <ion-textarea
+                      formControlName="description"
+                      class="ion-no-margin ion-no-padding"
+                      placeholder="Catatan (tidak wajib)"
+                    ></ion-textarea>
+                  </ion-item>
+                </ng-container>
               </ng-container>
             </ng-container>
 
@@ -135,21 +177,29 @@
               <ion-label>Semuanya</ion-label>
             </ion-item>
 
-            <ion-item *ngIf="offerAll" lines="full">
-              <ion-input
-                class="ion-no-margin ion-no-padding"
-                placeholder="Nilai penawaran semua item, mis: 2500"
-                formControlName="offer_cost"
-                color="danger"
-                type="number"
-              ></ion-input>
-            </ion-item>
+            <ng-container *ngIf="offerAll">
+              <ion-item lines="full">
+                <ion-label position="stacked">Tawaran</ion-label>
+                <ion-input
+                  class="ion-no-margin ion-no-padding"
+                  placeholder="Tawaran semua item, mis: 2500"
+                  formControlName="cost"
+                  color="danger"
+                  type="number"
+                ></ion-input>
+
+                <ion-textarea
+                  class="ion-no-margin ion-no-padding"
+                  placeholder="Catatan (tidak wajib)"
+                  formControlName="description"
+                ></ion-textarea>
+              </ion-item>
+            </ng-container>
           </ion-list>
 
           <ion-row class="ion-no-padding ion-no-margin">
             <ion-col size="8">
               <ion-button
-                fill="clear"
                 size="small"
                 type="submit"
                 [disabled]="formGroup.invalid"

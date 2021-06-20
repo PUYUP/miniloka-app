@@ -1,12 +1,18 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="switchMode()">
+        <ion-icon [name]="mode.icon" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
     <ion-title size="small">
-      Mode {{ mode.value == 'customer' ? 'Konsumen' : 'Bisnis' }}
+      {{ mode.value == 'customer' ? 'Konsumen' : 'Bisnis' }}
     </ion-title>
 
     <ion-buttons slot="end">
-      <ion-button (click)="switchMode()">
-        <ion-icon [name]="mode.icon" slot="icon-only"></ion-icon>
+      <ion-button (click)="switchMode()" mode="ios">
+        <ion-text>Ganti Mode</ion-text>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -66,9 +67,7 @@ export class PersonService {
           '/api/person/v1/users/' +
           this.authService.user.uuid +
           '/',
-        {
-          ...context,
-        }
+        { ...context }
       )
       .pipe(map((response: any) => response));
   }

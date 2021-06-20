@@ -43,7 +43,7 @@
             *ngIf="auth?.status == 'loading'"
             name="dots"
           ></ion-spinner>
-          <ion-text *ngIf="auth?.status == 'uninitialized'">Submit</ion-text>
+          <ion-text *ngIf="auth?.status != 'loading'">Submit</ion-text>
         </ng-container>
       </ion-button>
     </ion-col>
