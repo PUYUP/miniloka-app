@@ -54,7 +54,7 @@ export class ListingEffects {
       this.actions$.pipe(
         ofType(CreateSuccess),
         tap((payload) => {
-          this.router.navigate(['/listing-detail', payload.result.uuid]);
+          this.router.navigate(['/listing-inquiry', payload.result.uuid]);
           return payload;
         })
       ),

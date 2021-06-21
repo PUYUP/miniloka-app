@@ -33,14 +33,10 @@ const _inquiryReducer = createReducer(
   }),
   */
   on(inquiryActions.CreateSuccess, (state, payload) => {
-    // Replace 1st array with current value from db
-    let results = [...state.results];
-    results[0] = payload.result;
-
     return {
       ...state,
       result: payload.result,
-      results: results,
+      results: [{ ...payload.result }, ...state.results],
       status: Statuses.LOADED,
     };
   }),

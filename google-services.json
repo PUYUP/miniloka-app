@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1085301289045",
+    "project_id": "mini-loka",
+    "storage_bucket": "mini-loka.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085301289045:android:25aee4de83c58036e7a4dc",
+        "android_client_info": {
+          "package_name": "com.miniloka.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085301289045-6cue54ikgpurdjj5ooi4j7cg193ru767.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpAnWymS8JBqIq1d94Dedkma12RkrcniU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085301289045-6cue54ikgpurdjj5ooi4j7cg193ru767.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

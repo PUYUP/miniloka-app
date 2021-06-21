@@ -64,6 +64,7 @@ export class ProposeEditorComponent implements OnInit {
             this.formGroup.patchValue({
               cost: this.newestOffer?.cost > 0 ? this.newestOffer?.cost : '',
               description: this.newestOffer?.description,
+              can_attend: this.newestOffer?.can_attend,
             });
           });
         }
@@ -101,6 +102,7 @@ export class ProposeEditorComponent implements OnInit {
       offer_items: this.fb.array([]),
       cost: [''],
       description: [''],
+      can_attend: [false],
     });
   }
 
@@ -155,6 +157,7 @@ export class ProposeEditorComponent implements OnInit {
       offer: {
         cost: !this.offerAll ? 0 : this.formGroup.value.cost,
         description: !this.offerAll ? '' : this.formGroup.value.description,
+        can_attend: this.formGroup.value.can_attend,
       },
       offer_items: offer_items,
     };

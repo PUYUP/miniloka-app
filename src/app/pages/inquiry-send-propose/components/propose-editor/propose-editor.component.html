@@ -174,7 +174,23 @@
                 [value]="true"
               ></ion-checkbox>
 
-              <ion-label>Semuanya</ion-label>
+              <ion-label>
+                Semuanya
+                <p class="line">Harga borongan semua item</p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="full">
+              <ion-checkbox
+                color="primary"
+                slot="start"
+                formControlName="can_attend"
+              ></ion-checkbox>
+
+              <ion-label>
+                Bersedia datang
+                <p class="line">Datang ke tempat konsumen?</p>
+              </ion-label>
             </ion-item>
 
             <ng-container *ngIf="offerAll">
