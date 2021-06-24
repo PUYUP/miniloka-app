@@ -128,8 +128,6 @@ export class LocationEditorComponent implements OnInit {
         location: { listing: this.listing.uuid, ...this.formGroup.value },
       })
     );
-
-    this.dismiss();
   }
 
   async addMapMarker() {
@@ -161,10 +159,12 @@ export class LocationEditorComponent implements OnInit {
   }
 
   dismiss() {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
-    this.modalController.dismiss({
-      dismissed: true,
-    });
+    if (this.modalController.getTop) {
+      // using the injected ModalController this page
+      // can "dismiss" itself and optionally pass back data
+      this.modalController.dismiss({
+        dismissed: true,
+      });
+    }
   }
 }

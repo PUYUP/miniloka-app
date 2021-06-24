@@ -40,6 +40,13 @@ const _listingReducer = createReducer(
       status: Statuses.LOADED,
     };
   }),
+  on(listingActions.CreateFailure, (state, error) => {
+    return {
+      ...state,
+      error: error,
+      status: Statuses.UNINITIALIZED,
+    };
+  }),
 
   // UPDATE
   on(listingActions.Update, (state, payload) => {
@@ -71,6 +78,13 @@ const _listingReducer = createReducer(
       status: Statuses.LOADED,
     };
   }),
+  on(listingActions.UpdateFailure, (state, error) => {
+    return {
+      ...state,
+      error: error,
+      status: Statuses.UNINITIALIZED,
+    };
+  }),
 
   // DELETE
   /*
@@ -91,6 +105,7 @@ const _listingReducer = createReducer(
 
     return {
       ...state,
+      result: {},
       results: x,
       status: Statuses.LOADED,
     };

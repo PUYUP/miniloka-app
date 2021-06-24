@@ -22,22 +22,25 @@ const _proposeReducer = createReducer(
   initialProposeState,
 
   // CREATE
-  /*
   on(proposeActions.Create, (state, payload) => {
     return {
       ...state,
-      result: payload.data,
-      results: [payload.data, ...state.results],
       status: Statuses.LOADING,
     };
   }),
-  */
   on(proposeActions.CreateSuccess, (state, payload) => {
     return {
       ...state,
       result: payload.result,
       results: [{ ...payload.result }, ...state.results],
       status: Statuses.LOADED,
+    };
+  }),
+  on(proposeActions.CreateFailure, (state, error) => {
+    return {
+      ...state,
+      error: error,
+      status: Statuses.UNINITIALIZED,
     };
   }),
 
@@ -71,6 +74,13 @@ const _proposeReducer = createReducer(
       status: Statuses.LOADED,
     };
   }),
+  on(proposeActions.UpdateFailure, (state, error) => {
+    return {
+      ...state,
+      error: error,
+      status: Statuses.UNINITIALIZED,
+    };
+  }),
 
   // DELETE
   /*
@@ -91,6 +101,7 @@ const _proposeReducer = createReducer(
 
     return {
       ...state,
+      result: {},
       results: x,
       status: Statuses.LOADED,
     };

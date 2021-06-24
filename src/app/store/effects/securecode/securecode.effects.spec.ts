@@ -2,21 +2,18 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Observable } from 'rxjs';
 
-import { VerifycodeEffects } from './verifycode.effects';
+import { SecureCodeEffects } from './securecode.effects';
 
-describe('VerifycodeEffects', () => {
+describe('SecureCodeEffects', () => {
   let actions$: Observable<any>;
-  let effects: VerifycodeEffects;
+  let effects: SecureCodeEffects;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        VerifycodeEffects,
-        provideMockActions(() => actions$)
-      ]
+      providers: [SecureCodeEffects, provideMockActions(() => actions$)],
     });
 
-    effects = TestBed.inject(VerifycodeEffects);
+    effects = TestBed.inject(SecureCodeEffects);
   });
 
   it('should be created', () => {

@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Register } from 'src/app/store/actions/auth.actions';
-import { InvokeReset } from 'src/app/store/actions/verifycode.actions';
+import { InvokeReset } from 'src/app/store/actions/securecode.actions';
 import { AppState } from 'src/app/store/reducers';
 import { SelectAuth } from 'src/app/store/selectors/auth.selectors';
-import { SelectVerifycodeValidate } from 'src/app/store/selectors/verifycode.selectors';
+import { SelectSecureCodeValidate } from 'src/app/store/selectors/securecode.selectors';
 
 @Component({
   selector: 'app-register-form',
@@ -14,7 +14,7 @@ import { SelectVerifycodeValidate } from 'src/app/store/selectors/verifycode.sel
   styleUrls: ['./register-form.component.scss'],
 })
 export class RegisterFormComponent implements OnInit {
-  verifycodeValidate$: Observable<any>;
+  securecodeValidate$: Observable<any>;
   auth$: Observable<any>;
 
   formGroup: any = FormGroup;
@@ -25,10 +25,10 @@ export class RegisterFormComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private store: Store<AppState>) {
     // Validate
-    this.verifycodeValidate$ = this.store.pipe(
-      select(SelectVerifycodeValidate)
+    this.securecodeValidate$ = this.store.pipe(
+      select(SelectSecureCodeValidate)
     );
-    this.verifycodeValidate$.subscribe((payload: any) => {
+    this.securecodeValidate$.subscribe((payload: any) => {
       this.initForm();
 
       if (payload.result?.token) {

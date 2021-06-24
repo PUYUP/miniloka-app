@@ -6,9 +6,9 @@ import {
   Invoke,
   InvokeResend,
   InvokeReset,
-} from 'src/app/store/actions/verifycode.actions';
+} from 'src/app/store/actions/securecode.actions';
 import { AppState } from 'src/app/store/reducers';
-import { SelectVerifycode } from 'src/app/store/selectors/verifycode.selectors';
+import { SelectSecureCode } from 'src/app/store/selectors/securecode.selectors';
 
 @Component({
   selector: 'app-boarding-form',
@@ -18,12 +18,12 @@ import { SelectVerifycode } from 'src/app/store/selectors/verifycode.selectors';
 export class BoardingFormComponent implements OnInit {
   @Input('challenge') challenge: string;
 
-  verifycode$: Observable<any>;
+  securecode$: Observable<any>;
 
   formGroup: any = FormGroup;
 
   constructor(private fb: FormBuilder, private store: Store<AppState>) {
-    this.verifycode$ = this.store.pipe(select(SelectVerifycode));
+    this.securecode$ = this.store.pipe(select(SelectSecureCode));
   }
 
   ngOnInit() {

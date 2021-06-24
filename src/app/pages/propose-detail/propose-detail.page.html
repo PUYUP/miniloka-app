@@ -32,17 +32,56 @@
               <p *ngIf="item.description" [innerHTML]="item.description"></p>
             </ion-label>
 
-            <ion-note slot="end" color="danger">
+            <ion-note
+              slot="end"
+              color="danger"
+              [ngStyle]="{'font-size': '13px'}"
+            >
               <strong *ngIf="propose?.result?.newest_offer?.cost == 0">
-                Rp {{ item.cost | number }}
+                <ion-text *ngIf="item.is_available">
+                  Rp {{ item.cost | number }}
+                </ion-text>
+
+                <ion-icon
+                  *ngIf="!item.is_available"
+                  name="close-outline"
+                ></ion-icon>
               </strong>
 
-              <strong *ngIf="propose?.result?.newest_offer?.cost > 0">
-                &mdash;
-              </strong>
+              <ion-icon
+                *ngIf="propose?.result?.newest_offer?.cost > 0"
+                color="success"
+                name="checkmark-outline"
+              ></ion-icon>
             </ion-note>
           </ion-item>
         </ng-container>
+
+        <ion-item *ngIf="propose?.result?.newest_offer">
+          <ion-label class="ion-text-wrap">
+            Bersedia datang
+            <p class="line">
+              Penawar bersedia datang ke lokasi Anda. Hubungi penawar terlebih
+              dulu.
+            </p>
+          </ion-label>
+
+          <ion-badge
+            *ngIf="propose?.result?.newest_offer?.can_attend == false"
+            slot="end"
+            color="dark"
+          >
+            Tidak
+          </ion-badge>
+
+          <ion-badge
+            *ngIf="propose?.result?.newest_offer?.can_attend == true"
+            slot="end"
+            color="success"
+          >
+            Ya
+          </ion-badge>
+        </ion-item>
 
         <ion-item *ngIf="propose?.result?.newest_offer?.cost > 0">
           <ion-label class="ion-text-wrap">
@@ -53,7 +92,7 @@
             ></p>
           </ion-label>
 
-          <ion-note slot="end" color="danger">
+          <ion-note slot="end" color="danger" [ngStyle]="{'font-size': '13px'}">
             <strong>
               Rp {{ propose?.result?.newest_offer?.cost | number }}
             </strong>
@@ -61,25 +100,27 @@
         </ion-item>
 
         <ion-item-divider color="light">
-          <ion-label>Penawar</ion-label>
+          <ion-label>Hubungi penawar</ion-label>
         </ion-item-divider>
 
         <ion-item>
           <ion-label class="ion-text-wrap">
-            <table [ngStyle]="{'font-size': '13px'}">
+            <table [ngStyle]="{'font-size': '14px'}">
               <tr>
-                <td>Nama</td>
+                <td [ngStyle]="{'width': '125px'}">Nama</td>
                 <td class="ion-padding-start">
                   {{ propose?.result?.listing?.label }}
                 </td>
               </tr>
 
+              <!--
               <tr>
                 <td>Kata kunci</td>
                 <td class="ion-padding-start">
                   {{ propose?.result?.listing?.keyword }}
                 </td>
               </tr>
+              -->
 
               <tr>
                 <td>Email</td>
@@ -114,9 +155,9 @@
 
         <ion-item lines="none">
           <ion-label class="ion-text-wrap">
-            <table [ngStyle]="{'font-size': '13px'}">
+            <table [ngStyle]="{'font-size': '14px'}">
               <tr>
-                <td>Alamat</td>
+                <td [ngStyle]="{'width': '125px'}">Alamat</td>
                 <td class="ion-padding-start">
                   {{ propose?.result?.listing?.location?.street_address ?
                   propose?.result?.listing?.location?.street_address : "&mdash;"

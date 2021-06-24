@@ -4,11 +4,11 @@ import { ListingEffects } from './listing/listing.effects';
 import { OfferEffects } from './offer/offer.effects';
 import { PersonEffects } from './person/person.effects';
 import { ProposeEffects } from './propose/propose.effects';
-import { VerifycodeEffects } from './verifycode/verifycode.effects';
+import { SecureCodeEffects } from './securecode/securecode.effects';
 
 export const AppEffects = [
   AuthEffects,
-  VerifycodeEffects,
+  SecureCodeEffects,
   PersonEffects,
   InquiryEffects,
   ListingEffects,

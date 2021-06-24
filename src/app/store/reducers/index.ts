@@ -11,17 +11,17 @@ import { offerReducer, OfferState } from './offer.reducers';
 import { personReducer, PersonState } from './person.reducers';
 import { proposeReducer, ProposeState } from './propose.reducers';
 import {
-  verifycodeReducer,
-  VerifycodeState,
-  verifycodeValidateReducer,
-  VerifycodeValidateState,
-} from './verifycode.reducers';
+  securecodeReducer,
+  SecureCodeState,
+  securecodeValidateReducer,
+  SecureCodeValidateState,
+} from './securecode.reducers';
 
 // STATE
 export interface AppState {
   auth: AuthState;
-  verifycode: VerifycodeState;
-  verifycode_validate: VerifycodeValidateState;
+  securecode: SecureCodeState;
+  securecode_validate: SecureCodeValidateState;
   password_recovery: PasswordRecoveryState;
   person: PersonState;
   inquiry: InquiryState;
@@ -33,8 +33,8 @@ export interface AppState {
 // REDUCERS
 export const AppReducers: ActionReducerMap<AppState> = {
   auth: authReducer,
-  verifycode: verifycodeReducer,
-  verifycode_validate: verifycodeValidateReducer,
+  securecode: securecodeReducer,
+  securecode_validate: securecodeValidateReducer,
   password_recovery: passwordRecoveryReducer,
   person: personReducer,
   inquiry: inquiryReducer,

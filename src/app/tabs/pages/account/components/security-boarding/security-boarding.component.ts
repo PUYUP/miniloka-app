@@ -3,7 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store/reducers';
-import { SelectVerifycode } from 'src/app/store/selectors/verifycode.selectors';
+import { SelectSecureCode } from 'src/app/store/selectors/securecode.selectors';
 
 @Component({
   selector: 'app-security-boarding',
@@ -13,14 +13,14 @@ import { SelectVerifycode } from 'src/app/store/selectors/verifycode.selectors';
 export class SecurityBoardingComponent implements OnInit {
   @Input('data') data: any;
 
-  verifycode$: Observable<any>;
+  securecode$: Observable<any>;
   action: string = 'change';
 
   constructor(
     public modalController: ModalController,
     private store: Store<AppState>
   ) {
-    this.verifycode$ = this.store.pipe(select(SelectVerifycode));
+    this.securecode$ = this.store.pipe(select(SelectSecureCode));
   }
 
   ngOnInit() {
@@ -28,8 +28,10 @@ export class SecurityBoardingComponent implements OnInit {
   }
 
   dismiss() {
-    this.modalController.dismiss({
-      dismissed: true,
-    });
+    if (this.modalController.getTop()) {
+      this.modalController.dismiss({
+        dismissed: true,
+      });
+    }
   }
 }

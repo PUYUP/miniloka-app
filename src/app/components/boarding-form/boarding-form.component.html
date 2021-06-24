@@ -18,12 +18,12 @@
     class="ion-margin-top"
     [disabled]="formGroup.invalid"
   >
-    <ng-container *ngIf="verifycode$ | async as verifycode">
+    <ng-container *ngIf="securecode$ | async as securecode">
       <ion-spinner
-        *ngIf="verifycode?.status == 'loading'"
+        *ngIf="securecode?.status == 'loading'"
         name="dots"
       ></ion-spinner>
-      <ion-text *ngIf="verifycode?.status != 'loading'">Submit</ion-text>
+      <ion-text *ngIf="securecode?.status != 'loading'">Submit</ion-text>
     </ng-container>
   </ion-button>
 </form>

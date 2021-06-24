@@ -1,8 +1,10 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Create, Update } from 'src/app/store/actions/inquiry.actions';
 import { AppState } from 'src/app/store/reducers';
+import { HowToInquiryComponent } from '../how-to-inquiry/how-to-inquiry.component';
 
 @Component({
   selector: 'app-inquiry-editor',
@@ -19,7 +21,19 @@ export class InquiryEditorComponent implements OnInit {
   itemValue: string;
   itemRemoved: any = [];
 
-  constructor(private fb: FormBuilder, private store: Store<AppState>) {}
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+    public modalController: ModalController
+  ) {}
+
+  async presentHowTo() {
+    const modal = await this.modalController.create({
+      component: HowToInquiryComponent,
+    });
+
+    await modal.present();
+  }
 
   ngOnInit() {
     this.initForm();
@@ -151,5 +165,9 @@ export class InquiryEditorComponent implements OnInit {
     } else {
       this.create();
     }
+  }
+
+  showHowTo() {
+    this.presentHowTo();
   }
 }

@@ -7,13 +7,13 @@
 
       <ion-textarea
         formControlName="keyword"
-        placeholder="Contoh: #perbaikan tv merek #sony"
+        placeholder="Contoh: kuliner lesehan"
       ></ion-textarea>
     </ion-item>
 
     <!-- LIST ITEMS -->
     <ion-item class="items">
-      <ion-label position="stacked">Rincian</ion-label>
+      <ion-label position="stacked">Permintaan</ion-label>
 
       <ng-container formArrayName="items">
         <ng-container
@@ -71,14 +71,14 @@
     <ion-row class="ion-margin-top ion-align-items-center">
       <ion-col size="6">
         <ion-button type="submit" [disabled]="formGroup.invalid">
-          Submit
+          Kirim
         </ion-button>
       </ion-col>
 
       <ion-col size="6" class="ion-text-end">
-        <ion-button mode="ios" size="small" fill="clear">
+        <ion-button mode="ios" size="small" fill="clear" (click)="showHowTo()">
           <ion-icon name="help-circle-outline" slot="start"></ion-icon>
-          <ion-text>Lihat contoh</ion-text>
+          <ion-text>Baca petunjuk</ion-text>
         </ion-button>
       </ion-col>
     </ion-row>

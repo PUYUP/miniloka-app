@@ -3,10 +3,10 @@ import { ModalController, Platform } from '@ionic/angular';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UpdateSecurity } from 'src/app/store/actions/person.actions';
-import { Invoke, InvokeReset } from 'src/app/store/actions/verifycode.actions';
+import { Invoke, InvokeReset } from 'src/app/store/actions/securecode.actions';
 import { AppState } from 'src/app/store/reducers';
 import { SelectSecurity } from 'src/app/store/selectors/person.selectors';
-import { SelectVerifycode } from 'src/app/store/selectors/verifycode.selectors';
+import { SelectSecureCode } from 'src/app/store/selectors/securecode.selectors';
 import { SecurityBoardingComponent } from '../security-boarding/security-boarding.component';
 
 @Component({
@@ -17,7 +17,7 @@ import { SecurityBoardingComponent } from '../security-boarding/security-boardin
 export class SecurityEditorComponent implements OnInit {
   @Input('data') data: any;
 
-  verifycode$: Observable<any>;
+  securecode$: Observable<any>;
   security$: Observable<any>;
 
   dataCopy: any;
@@ -37,8 +37,8 @@ export class SecurityEditorComponent implements OnInit {
       });
     }
 
-    this.verifycode$ = this.store.pipe(select(SelectVerifycode));
-    this.verifycode$.subscribe((payload: any) => {
+    this.securecode$ = this.store.pipe(select(SelectSecureCode));
+    this.securecode$.subscribe((payload: any) => {
       if (payload.status == 'loaded' && payload.result?.token) {
         if (payload.result?.is_verified) {
           this.dismiss();

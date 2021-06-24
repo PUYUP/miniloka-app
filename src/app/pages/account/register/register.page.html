@@ -16,18 +16,18 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ng-container *ngIf="verifycode$ | async as verifycode">
+  <ng-container *ngIf="securecode$ | async as securecode">
     <app-boarding-form
-      *ngIf="!verifycode.result?.token"
+      *ngIf="!securecode.result?.token"
       challenge="email_validation"
     ></app-boarding-form>
 
     <app-boarding-validation-form
-      *ngIf="verifycode.result?.token && !verifycode.result?.is_verified"
+      *ngIf="securecode.result?.token && !securecode.result?.is_verified"
     ></app-boarding-validation-form>
 
     <app-register-form
-      *ngIf="verifycode.result?.is_verified"
+      *ngIf="securecode.result?.is_verified"
     ></app-register-form>
   </ng-container>
 </ion-content>

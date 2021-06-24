@@ -1,29 +1,29 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { Statuses } from 'src/app/app.constants';
-import * as verifycodeActions from '../actions/verifycode.actions';
+import * as securecodeActions from '../actions/securecode.actions';
 
-export const verifycodeFeatureName = 'verifycode';
-export const verifycodeValidateFeatureName = 'verifycode_validate';
+export const securecodeFeatureName = 'securecode';
+export const securecodeValidateFeatureName = 'securecode_validate';
 
 // INVOKE
-export interface VerifycodeState {
+export interface SecureCodeState {
   result: any;
   error: any;
   status: any;
   isResend?: boolean;
 }
 
-export const initialVerifycodeState: VerifycodeState = {
+export const initialSecureCodeState: SecureCodeState = {
   result: null,
   error: null,
   status: Statuses.UNINITIALIZED,
   isResend: false,
 };
 
-const _verifycodeReducer = createReducer(
-  initialVerifycodeState,
+const _securecodeReducer = createReducer(
+  initialSecureCodeState,
 
-  on(verifycodeActions.Invoke, (state, payload) => {
+  on(securecodeActions.Invoke, (state, payload) => {
     return {
       ...state,
       result: {},
@@ -32,7 +32,7 @@ const _verifycodeReducer = createReducer(
       isResend: false,
     };
   }),
-  on(verifycodeActions.InvokeSuccess, (state, payload) => {
+  on(securecodeActions.InvokeSuccess, (state, payload) => {
     return {
       ...state,
       result: { ...payload.result },
@@ -40,14 +40,14 @@ const _verifycodeReducer = createReducer(
       status: Statuses.LOADED,
     };
   }),
-  on(verifycodeActions.InvokeFailure, (state, error) => {
+  on(securecodeActions.InvokeFailure, (state, error) => {
     return {
       ...state,
       error: error,
       status: Statuses.UNINITIALIZED,
     };
   }),
-  on(verifycodeActions.InvokeReset, (state) => {
+  on(securecodeActions.InvokeReset, (state) => {
     return {
       ...state,
       result: {},
@@ -56,7 +56,7 @@ const _verifycodeReducer = createReducer(
       isResend: false,
     };
   }),
-  on(verifycodeActions.InvokeResend, (state) => {
+  on(securecodeActions.InvokeResend, (state) => {
     return {
       ...state,
       result: { ...state.result },
@@ -67,7 +67,7 @@ const _verifycodeReducer = createReducer(
   }),
 
   // VALIDATE
-  on(verifycodeActions.ValidateSuccess, (state, payload) => {
+  on(securecodeActions.ValidateSuccess, (state, payload) => {
     return {
       ...state,
       result: { ...payload.result },
@@ -77,30 +77,30 @@ const _verifycodeReducer = createReducer(
   })
 );
 
-export function verifycodeReducer(
-  state: VerifycodeState | undefined,
+export function securecodeReducer(
+  state: SecureCodeState | undefined,
   action: Action
 ) {
-  return _verifycodeReducer(state, action);
+  return _securecodeReducer(state, action);
 }
 
 // VALIDATE
-export interface VerifycodeValidateState {
+export interface SecureCodeValidateState {
   result: any;
   error: any;
   status: any;
 }
 
-export const initialVerifycodeValidateState: VerifycodeValidateState = {
+export const initialSecureCodeValidateState: SecureCodeValidateState = {
   result: null,
   error: null,
   status: Statuses.UNINITIALIZED,
 };
 
-const _verifycodeValidateReducer = createReducer(
-  initialVerifycodeValidateState,
+const _securecodeValidateReducer = createReducer(
+  initialSecureCodeValidateState,
 
-  on(verifycodeActions.Validate, (state) => {
+  on(securecodeActions.Validate, (state) => {
     return {
       ...state,
       result: {},
@@ -108,7 +108,7 @@ const _verifycodeValidateReducer = createReducer(
       status: Statuses.LOADING,
     };
   }),
-  on(verifycodeActions.ValidateSuccess, (state, payload) => {
+  on(securecodeActions.ValidateSuccess, (state, payload) => {
     return {
       ...state,
       result: { ...payload.result },
@@ -116,7 +116,7 @@ const _verifycodeValidateReducer = createReducer(
       status: Statuses.LOADED,
     };
   }),
-  on(verifycodeActions.ValidateFailure, (state, error) => {
+  on(securecodeActions.ValidateFailure, (state, error) => {
     return {
       ...state,
       error: error,
@@ -125,9 +125,9 @@ const _verifycodeValidateReducer = createReducer(
   })
 );
 
-export function verifycodeValidateReducer(
-  state: VerifycodeValidateState | undefined,
+export function securecodeValidateReducer(
+  state: SecureCodeValidateState | undefined,
   action: Action
 ) {
-  return _verifycodeValidateReducer(state, action);
+  return _securecodeValidateReducer(state, action);
 }

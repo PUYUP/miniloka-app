@@ -43,7 +43,10 @@ export class ProfileEditorComponent implements OnInit {
   }
 
   onSubmit() {
-    this.dismiss();
+    if (this.modalController.getTop()) {
+      this.dismiss();
+    }
+
     this.store.dispatch(UpdateProfile({ profile: this.formGroup.value }));
   }
 

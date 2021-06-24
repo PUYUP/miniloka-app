@@ -1,10 +1,10 @@
-export interface InvokeVerifycode {
+export interface InvokeSecureCode {
   email?: string;
   msisdn?: string;
   challenge: string;
 }
 
-export interface ValidateVerifycode {
+export interface ValidateSecureCode {
   email?: string;
   msisdn?: string;
   challenge: string;

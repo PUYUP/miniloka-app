@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import {
   ActionSheetController,
   LoadingController,
@@ -107,7 +107,8 @@ export class HomePage {
       backdropDismiss: false,
     });
     await loading.present().then(() => {});
-    this.checkGPSPermission();
+    // this.checkGPSPermission();
+    this.askToTurnOnGPS();
 
     const { role, data } = await loading.onDidDismiss();
   }
@@ -123,6 +124,7 @@ export class HomePage {
 
     await modal.present().then(() => {
       this.inquiryEditorIsPresent = true;
+      if (this.loadingController.getTop) this.loadingController.dismiss();
     });
 
     const { role } = await modal.onDidDismiss();
@@ -138,17 +140,11 @@ export class HomePage {
       .checkPermission(this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION)
       .then(
         (result) => {
-          if (result.hasPermission) {
-            //If having permission show 'Turn On GPS' dialogue
-            this.askToTurnOnGPS();
-          } else {
-            //If not having permission ask for permission
-            this.requestGPSPermission();
-          }
+          this.askToTurnOnGPS();
         },
         (err) => {
           this.presentToast(JSON.stringify(err));
-          this.loadingController.dismiss();
+          this.modalController.dismiss();
         }
       );
   }
@@ -157,18 +153,22 @@ export class HomePage {
     this.locationAccuracy.canRequest().then((canRequest: boolean) => {
       if (canRequest) {
         console.log('4');
-
-        this.loadingController.dismiss();
+        // this.loadingController.dismiss();
       } else {
         //Show 'GPS Permission Request' dialogue
         this.androidPermissions
           .requestPermission(
             this.androidPermissions.PERMISSION.ACCESS_FINE_LOCATION
           )
-          .then(() => {
-            // call method to turn on GPS
-            this.askToTurnOnGPS();
-          });
+          .then(
+            () => {
+              // call method to turn on GPS
+              this.askToTurnOnGPS();
+            },
+            (error) => {
+              this.presentToast('Akses ke GPS harus diberikan');
+            }
+          );
       }
     });
   }
@@ -182,18 +182,16 @@ export class HomePage {
           this.getLocationCoordinates();
         },
         (error) => {
-          this.loadingController.dismiss();
           this.presentToast('GPS harus diaktifkan');
+          this.loadingController.dismiss();
         }
       );
   }
 
   // Methos to get device accurate coordinates using device GPS
   getLocationCoordinates() {
-    this.loadingController.dismiss();
-
     this.geolocation
-      .getCurrentPosition()
+      .getCurrentPosition({ enableHighAccuracy: true, timeout: 10000 })
       .then((resp) => {
         this.locationCoords.latitude = resp.coords.latitude;
         this.locationCoords.longitude = resp.coords.longitude;
@@ -205,6 +203,7 @@ export class HomePage {
       })
       .catch((error) => {
         this.presentToast(JSON.stringify(error));
+        this.loadingController.dismiss();
       });
   }
   // END
@@ -264,6 +263,7 @@ export class HomePage {
   showInquiryEditor() {
     this.presentLoading('Meminta lokasi...');
     // this.presentInquiryEditor();
+    // this.checkGPSPermission();
   }
 
   doRefresh(event: any) {

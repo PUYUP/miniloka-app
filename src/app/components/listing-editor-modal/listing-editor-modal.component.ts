@@ -22,17 +22,18 @@ export class ListingEditorModalComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.listing$ = this.store.pipe(select(SelectListing));
-    this.listing$.subscribe(async (state) => {
-      const isModalPresent = await this.modalController.getTop();
-      if (isModalPresent) this.dismiss();
+    this.listing$.subscribe((state) => {
+      if (state?.result?.is_created) this.dismiss();
     });
   }
 
   ngOnInit() {}
 
   dismiss() {
-    this.modalController.dismiss({
-      dismissed: true,
-    });
+    if (this.modalController.getTop()) {
+      this.modalController.dismiss({
+        dismissed: true,
+      });
+    }
   }
 }

@@ -22,15 +22,17 @@ export class InquiryEditorModalComponent implements OnInit {
   ) {
     this.inquiry$ = this.store.pipe(select(SelectInquiry));
     this.inquiry$.subscribe((payload: any) => {
-      if (this.modalController.getTop()) this.dismiss();
+      this.dismiss();
     });
   }
 
   ngOnInit() {}
 
   dismiss() {
-    this.modalController.dismiss({
-      dismissed: true,
-    });
+    if (this.modalController.getTop()) {
+      this.modalController.dismiss({
+        dismissed: true,
+      });
+    }
   }
 }

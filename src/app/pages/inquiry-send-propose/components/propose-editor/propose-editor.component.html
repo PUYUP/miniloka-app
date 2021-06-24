@@ -68,14 +68,31 @@
                 ></p>
               </ion-label>
 
-              <ion-note slot="end" color="danger">
-                <strong *ngIf="inquiry?.result?.newest_offer?.cost == 0">
+              <ion-note
+                slot="end"
+                color="danger"
+                [ngStyle]="{ 'font-size': '13px' }"
+              >
+                <strong
+                  *ngIf="
+                    inquiry?.result?.newest_offer?.cost == 0 &&
+                    item.is_available
+                  "
+                >
                   Rp {{ item.cost | number }}
                 </strong>
 
-                <strong *ngIf="inquiry?.result?.newest_offer?.cost > 0">
-                  &mdash;
-                </strong>
+                <ion-icon
+                  *ngIf="!item.is_available"
+                  name="close-outline"
+                  color="danger"
+                ></ion-icon>
+
+                <ion-icon
+                  *ngIf="inquiry?.result?.newest_offer?.cost > 0"
+                  name="checkmark-outline"
+                  color="success"
+                ></ion-icon>
               </ion-note>
             </ion-item>
           </ng-container>
@@ -94,7 +111,11 @@
               ></p>
             </ion-label>
 
-            <ion-note slot="end" color="danger">
+            <ion-note
+              slot="end"
+              color="danger"
+              [ngStyle]="{ 'font-size': '13px' }"
+            >
               <strong>
                 Rp {{ inquiry?.result?.newest_offer?.cost | number }}
               </strong>
@@ -121,7 +142,7 @@
                   <ion-note
                     *ngIf="offerAll"
                     slot="start"
-                    [ngStyle]="{ 'margin-right': '5px' }"
+                    [ngStyle]="{ 'margin-right': '5px', 'font-size': '13px' }"
                   >
                     {{ i + 1 }}
                   </ion-note>
@@ -129,6 +150,7 @@
                   <ion-badge
                     *ngIf="!offerAll"
                     slot="start"
+                    color="dark"
                     [ngStyle]="{ 'margin-right': '5px' }"
                   >
                     {{ i + 1 }}
@@ -138,9 +160,21 @@
                     class="ion-text-wrap"
                     [innerHTML]="item.label"
                   ></ion-label>
+
+                  <ion-checkbox
+                    *ngIf="!offerAll"
+                    slot="end"
+                    (ionChange)="availableChange(i)"
+                    formControlName="is_available"
+                  ></ion-checkbox>
                 </ion-item>
 
-                <ng-container *ngIf="!offerAll">
+                <ng-container
+                  *ngIf="
+                    formGroup.controls['offer_items'].controls[i].value
+                      .is_available && !offerAll
+                  "
+                >
                   <ion-item lines="full">
                     <ion-label position="stacked" class="ion-text-wrap">
                       Penawaran
@@ -168,6 +202,19 @@
               <ion-checkbox
                 color="primary"
                 slot="start"
+                formControlName="can_attend"
+              ></ion-checkbox>
+
+              <ion-label>
+                Bersedia datang
+                <p class="line">Datang ke tempat konsumen?</p>
+              </ion-label>
+            </ion-item>
+
+            <ion-item lines="full">
+              <ion-checkbox
+                color="primary"
+                slot="start"
                 (ionChange)="offerAllChange()"
                 [(ngModel)]="offerAll"
                 [ngModelOptions]="{ standalone: true }"
@@ -177,19 +224,6 @@
               <ion-label>
                 Semuanya
                 <p class="line">Harga borongan semua item</p>
-              </ion-label>
-            </ion-item>
-
-            <ion-item lines="full">
-              <ion-checkbox
-                color="primary"
-                slot="start"
-                formControlName="can_attend"
-              ></ion-checkbox>
-
-              <ion-label>
-                Bersedia datang
-                <p class="line">Datang ke tempat konsumen?</p>
               </ion-label>
             </ion-item>
 
@@ -218,13 +252,22 @@
               <ion-button
                 size="small"
                 type="submit"
+                expand="block"
                 [disabled]="formGroup.invalid"
               >
-                {{
-                  inquiry?.result?.newest_offer
-                    ? "Rubah Tawaran"
-                    : "Kirim Tawaran"
-                }}
+                <ng-container *ngIf="propose$ | async as propose">
+                  <ng-container *ngIf="propose?.status == 'loading'">
+                    <ion-spinner name="dots"></ion-spinner>
+                  </ng-container>
+
+                  <ng-container *ngIf="propose?.status != 'loading'">
+                    {{
+                      inquiry?.result?.newest_offer
+                        ? "Rubah Tawaran"
+                        : "Kirim Tawaran"
+                    }}
+                  </ng-container>
+                </ng-container>
               </ion-button>
             </ion-col>
 
@@ -242,5 +285,23 @@
         </form>
       </ion-card-content>
     </ion-card>
+
+    <ion-list lines="full" class="ion-margin-top">
+      <ion-item-divider>
+        <ion-label>Lokasi konsumen</ion-label>
+      </ion-item-divider>
+
+      <ion-item>
+        <ion-label>
+          {{ inquiry?.result?.distance | number: "1.0-1" }} km
+        </ion-label>
+
+        <ion-buttons slot="end">
+          <ion-button (click)="openMap(inquiry?.result?.location)">
+            Lihat di peta
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
   </ng-container>
 </ng-container>

@@ -25,7 +25,7 @@ export class InquiryListHuntComponent implements OnInit {
   constructor(private store: Store<AppState>) {
     this.listing$ = this.store.pipe(select(SelectListing));
     this.listing$.subscribe((state: any) => {
-      if (state?.is_update) {
+      if (state?.is_updated) {
         this.keyword = state?.keyword;
         this.getListing();
       }

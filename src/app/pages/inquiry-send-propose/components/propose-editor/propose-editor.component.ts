@@ -22,6 +22,8 @@ export class ProposeEditorComponent implements OnInit {
   @Input('listing_uuid') listing_uuid: string;
 
   inquiry$: Observable<any>;
+  propose$: Observable<any>;
+
   inquirySubscribe: any;
   inquiryItems: any;
   newestOffer: any;
@@ -34,7 +36,14 @@ export class ProposeEditorComponent implements OnInit {
     private store: Store<AppState>,
     private fb: FormBuilder,
     public toastController: ToastController
-  ) {}
+  ) {
+    this.propose$ = this.store.pipe(select(SelectPropose));
+    this.propose$.subscribe((state: any) => {
+      if (state?.status == 'loaded') {
+        this.sendOffer = false;
+      }
+    });
+  }
 
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -78,22 +87,40 @@ export class ProposeEditorComponent implements OnInit {
 
           let o = this.fb.group({
             inquiry_item: [item?.uuid],
-            cost: [
-              offerItem ? (offerItem.cost > 0 ? offerItem.cost : '') : '',
-              [Validators.required],
-            ],
-            description: [offerItem ? offerItem.description : ''],
+            cost: [offerItem ? (offerItem.cost > 0 ? offerItem.cost : '') : ''],
+            description: [offerItem?.description ? offerItem.description : ''],
+            is_available: [offerItem ? offerItem.is_available : false],
           });
 
           let index = this.offer_items().value.findIndex(
             (d: any) => d.inquiry_item == item.uuid
           );
 
-          if (index == -1) this.offer_items().push(o);
+          if (index == -1) {
+            this.offer_items().push(o);
+          } else {
+            this.offer_items().setControl(i, o);
+          }
+
           i++;
         }
       }
     });
+  }
+
+  availableChange(index: number) {
+    let value =
+      this.formGroup.controls['offer_items'].controls[index].value.is_available;
+
+    if (value) {
+      this.offer_items()
+        .controls[index].get('cost')
+        .setValidators([Validators.required]);
+    } else {
+      this.offer_items().controls[index].get('cost').clearValidators();
+    }
+
+    this.offer_items().controls[index].get('cost').updateValueAndValidity();
   }
 
   initForm() {
@@ -141,7 +168,10 @@ export class ProposeEditorComponent implements OnInit {
       if (this.offerAll) {
         x.cost = 0;
         x.description = '';
+        x.is_available = true;
       }
+
+      if (!item.is_available) x.cost = 0;
 
       i++;
       return x;
@@ -163,11 +193,17 @@ export class ProposeEditorComponent implements OnInit {
     };
 
     this.store.dispatch(Create({ data: data }));
-    this.sendOffer = false;
   }
 
   changeOffer() {
     this.sendOffer = !this.sendOffer;
+  }
+
+  openMap(location: any) {
+    let destination = location?.latitude + ',' + location?.longitude;
+    window.open(
+      'https://www.google.com/maps/search/?api=1&query=' + destination
+    );
   }
 
   ngOnDestroy() {

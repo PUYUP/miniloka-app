@@ -1,10 +1,14 @@
 export interface OfferItem {
-  propose_item: string; // uuid
+  inquiry_item: string; // uuid
   cost: number;
+  description?: string;
+  is_available?: boolean;
 }
 
 export interface Offer {
   inquiry: string; // uuid
-  offers: OfferItem[];
-  offer_cost?: number;
+  offer_items: OfferItem[];
+  cost?: number;
+  description?: string;
+  can_attend?: boolean;
 }

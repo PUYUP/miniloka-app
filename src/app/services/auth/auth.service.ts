@@ -96,7 +96,7 @@ export class AuthService {
    *
    * @param new_password
    * @param retype_password
-   * @param verifycode_email
+   * @param securecode_email
    * @param password_token
    * @param password_uidb64
    */

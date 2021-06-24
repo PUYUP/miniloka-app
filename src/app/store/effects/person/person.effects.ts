@@ -15,7 +15,7 @@ import {
   UpdateSecurityFailure,
   UpdateSecuritySuccess,
 } from '../../actions/person.actions';
-import { InvokeReset } from '../../actions/verifycode.actions';
+import { InvokeReset } from '../../actions/securecode.actions';
 
 @Injectable()
 export class PersonEffects {
@@ -108,7 +108,7 @@ export class PersonEffects {
       this.actions$.pipe(
         ofType(UpdateSecuritySuccess),
         mergeMap(() => {
-          // reset verifycode
+          // reset securecode
           InvokeReset();
 
           return this.personService.getUser().pipe(

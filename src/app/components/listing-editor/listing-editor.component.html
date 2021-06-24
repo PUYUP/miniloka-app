@@ -57,6 +57,10 @@
   </ion-list>
 
   <ion-button expand="block" type="submit" [disabled]="formGroup.invalid">
-    Submit
+    <ng-container *ngIf="submitLoading">
+      <ion-spinner name="dots"></ion-spinner>
+    </ng-container>
+
+    <ion-text *ngIf="!submitLoading">Submit</ion-text>
   </ion-button>
 </form>

@@ -79,7 +79,7 @@ export class ProposeEffects {
           .pipe(
             map((result) => {
               return UpdateSuccess({
-                result: { ...result, is_update: true },
+                result: { ...result, is_updated: true },
                 uuid: payload.uuid,
               });
             }),

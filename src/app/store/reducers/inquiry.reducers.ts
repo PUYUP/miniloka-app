@@ -40,6 +40,13 @@ const _inquiryReducer = createReducer(
       status: Statuses.LOADED,
     };
   }),
+  on(inquiryActions.CreateFailure, (state, error) => {
+    return {
+      ...state,
+      error: error,
+      status: Statuses.UNINITIALIZED,
+    };
+  }),
 
   // UPDATE
   on(inquiryActions.Update, (state, payload) => {
@@ -75,6 +82,13 @@ const _inquiryReducer = createReducer(
       status: Statuses.LOADED,
     };
   }),
+  on(inquiryActions.UpdateFailure, (state, error) => {
+    return {
+      ...state,
+      error: error,
+      status: Statuses.UNINITIALIZED,
+    };
+  }),
 
   // DELETE
   /*
@@ -95,6 +109,7 @@ const _inquiryReducer = createReducer(
 
     return {
       ...state,
+      result: {},
       results: x,
       status: Statuses.LOADED,
     };

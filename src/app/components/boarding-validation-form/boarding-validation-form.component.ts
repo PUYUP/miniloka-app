@@ -7,12 +7,12 @@ import {
   InvokeResend,
   InvokeReset,
   Validate,
-} from 'src/app/store/actions/verifycode.actions';
+} from 'src/app/store/actions/securecode.actions';
 import { AppState } from 'src/app/store/reducers';
 import {
-  SelectVerifycode,
-  SelectVerifycodeValidate,
-} from 'src/app/store/selectors/verifycode.selectors';
+  SelectSecureCode,
+  SelectSecureCodeValidate,
+} from 'src/app/store/selectors/securecode.selectors';
 
 @Component({
   selector: 'app-boarding-validation-form',
@@ -20,8 +20,8 @@ import {
   styleUrls: ['./boarding-validation-form.component.scss'],
 })
 export class BoardingValidationFormComponent implements OnInit {
-  verifycode$: Observable<any>;
-  verifycodeValidate$: Observable<any>;
+  securecode$: Observable<any>;
+  securecodeValidate$: Observable<any>;
 
   formGroup: any = FormGroup;
   email: string;
@@ -36,8 +36,8 @@ export class BoardingValidationFormComponent implements OnInit {
     public toastController: ToastController
   ) {
     // INVOKE
-    this.verifycode$ = this.store.pipe(select(SelectVerifycode));
-    this.verifycode$.subscribe((payload: any) => {
+    this.securecode$ = this.store.pipe(select(SelectSecureCode));
+    this.securecode$.subscribe((payload: any) => {
       if (payload.result?.token) {
         this.email = payload.result?.email;
         this.msisdn = payload.result?.msisdn;
@@ -56,8 +56,8 @@ export class BoardingValidationFormComponent implements OnInit {
     });
 
     // VALIDATE
-    this.verifycodeValidate$ = this.store.pipe(
-      select(SelectVerifycodeValidate)
+    this.securecodeValidate$ = this.store.pipe(
+      select(SelectSecureCodeValidate)
     );
   }
 

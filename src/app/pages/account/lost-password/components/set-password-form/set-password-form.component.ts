@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { PasswordRecovery } from 'src/app/store/actions/auth.actions';
-import { InvokeReset } from 'src/app/store/actions/verifycode.actions';
+import { InvokeReset } from 'src/app/store/actions/securecode.actions';
 import { AppState } from 'src/app/store/reducers';
-import { SelectVerifycode } from 'src/app/store/selectors/verifycode.selectors';
+import { SelectSecureCode } from 'src/app/store/selectors/securecode.selectors';
 
 @Component({
   selector: 'app-set-password-form',
@@ -14,16 +14,16 @@ import { SelectVerifycode } from 'src/app/store/selectors/verifycode.selectors';
 })
 export class SetPasswordFormComponent implements OnInit {
   showedPassword: boolean = false;
-  verifycode$: Observable<any>;
-  verifycodeSubscribe: any;
-  verifycode: any;
+  securecode$: Observable<any>;
+  securecodeSubscribe: any;
+  securecode: any;
 
   formGroup: any = FormGroup;
 
   constructor(private store: Store<AppState>, private fb: FormBuilder) {
-    this.verifycode$ = this.store.pipe(select(SelectVerifycode));
-    this.verifycodeSubscribe = this.verifycode$.subscribe((state: any) => {
-      if (state) this.verifycode = state?.result;
+    this.securecode$ = this.store.pipe(select(SelectSecureCode));
+    this.securecodeSubscribe = this.securecode$.subscribe((state: any) => {
+      if (state) this.securecode = state?.result;
     });
   }
 
@@ -41,11 +41,11 @@ export class SetPasswordFormComponent implements OnInit {
   onSubmit() {
     let param = {
       ...this.formGroup.value,
-      verifycode_email: this.verifycode?.email,
-      verifycode_passcode: this.verifycode?.passcode,
-      verifycode_token: this.verifycode?.token,
-      password_token: this.verifycode?.password_token,
-      password_uidb64: this.verifycode?.password_uidb64,
+      securecode_email: this.securecode?.email,
+      securecode_passcode: this.securecode?.passcode,
+      securecode_token: this.securecode?.token,
+      password_token: this.securecode?.password_token,
+      password_uidb64: this.securecode?.password_uidb64,
     };
 
     this.store.dispatch(PasswordRecovery({ credential: param }));
@@ -56,6 +56,6 @@ export class SetPasswordFormComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.verifycodeSubscribe.unsubscribe();
+    this.securecodeSubscribe.unsubscribe();
   }
 }

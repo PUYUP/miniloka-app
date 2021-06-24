@@ -80,12 +80,14 @@ export class ListingMapComponent implements OnInit {
   }
 
   dismiss() {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
-    this.modalController.dismiss({
-      dismissed: true,
-      latitude: this.selectedLatitude,
-      longitude: this.selectedLongitude,
-    });
+    if (this.modalController.getTop()) {
+      // using the injected ModalController this page
+      // can "dismiss" itself and optionally pass back data
+      this.modalController.dismiss({
+        dismissed: true,
+        latitude: this.selectedLatitude,
+        longitude: this.selectedLongitude,
+      });
+    }
   }
 }

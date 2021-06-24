@@ -17,7 +17,7 @@ import {
   RegisterFailure,
   RegisterSuccess,
 } from '../../actions/auth.actions';
-import { InvokeReset } from '../../actions/verifycode.actions';
+import { InvokeReset } from '../../actions/securecode.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -103,7 +103,7 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(RegisterSuccess),
       map((action) => {
-        // reset verifycode
+        // reset securecode
         InvokeReset();
 
         return Login({
@@ -146,7 +146,7 @@ export class AuthEffects {
           this.presentToast('Berhasil! Login dengan password baru.');
           this.router.navigate(['/login'], { replaceUrl: true });
 
-          // reset verifycode
+          // reset securecode
           return InvokeReset();
         })
       ),

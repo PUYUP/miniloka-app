@@ -21,10 +21,10 @@ export interface RegisterCredential {
 }
 
 export interface PasswordRecoveryCredential {
-  verifycode_email: string;
-  verifycode_msisdn: string;
-  verifycode_passcode: string;
-  verifycode_token: string;
+  securecode_email: string;
+  securecode_msisdn: string;
+  securecode_passcode: string;
+  securecode_token: string;
   new_password: string;
   retype_password: string;
   password_token: string;

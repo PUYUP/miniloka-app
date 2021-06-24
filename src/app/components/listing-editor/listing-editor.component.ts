@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Create, Update } from 'src/app/store/actions/listing.actions';
 import { AppState } from 'src/app/store/reducers';
+import { SelectListing } from 'src/app/store/selectors/listing.selectors';
 
 @Component({
   selector: 'app-listing-editor',
@@ -16,8 +17,16 @@ export class ListingEditorComponent implements OnInit {
 
   listing$: Observable<any>;
   formGroup: FormGroup;
+  submitLoading: boolean = false;
 
-  constructor(private fb: FormBuilder, private store: Store<AppState>) {}
+  constructor(private fb: FormBuilder, private store: Store<AppState>) {
+    this.listing$ = this.store.pipe(select(SelectListing));
+    this.listing$.subscribe((state: any) => {
+      if (state?.result?.uuid) {
+        this.submitLoading = false;
+      }
+    });
+  }
 
   ngOnInit() {
     this.initForm();
@@ -60,5 +69,7 @@ export class ListingEditorComponent implements OnInit {
     } else {
       this.store.dispatch(Create({ data: data }));
     }
+
+    this.submitLoading = true;
   }
 }

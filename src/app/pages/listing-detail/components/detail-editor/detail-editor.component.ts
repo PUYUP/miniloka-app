@@ -21,16 +21,19 @@ export class DetailEditorComponent implements OnInit {
     private store: Store<AppState>
   ) {
     this.listing$ = this.store.pipe(select(SelectListing, { uuid: this.uuid }));
-    this.listing$.subscribe((payload: any) => {
-      if (payload?.uuid && this.modalController.getTop()) this.dismiss();
+    this.listing$.subscribe((state: any) => {
+      console.log(state);
+      if (state?.result?.is_updated) this.dismiss();
     });
   }
 
   ngOnInit() {}
 
   dismiss() {
-    this.modalController.dismiss({
-      dismissed: true,
-    });
+    if (this.modalController.getTop()) {
+      this.modalController.dismiss({
+        dismissed: true,
+      });
+    }
   }
 }

@@ -18,6 +18,7 @@ import {
   SetDefault,
   SetDefaultSuccess,
   Update,
+  UpdateFailure,
   UpdateLocation,
   UpdateLocationSuccess,
   UpdateSuccess,
@@ -40,7 +41,7 @@ export class ListingEffects {
         return this.listingService.doCreate({ ...action.data }).pipe(
           map((result) => {
             return CreateSuccess({
-              result: result,
+              result: { ...result, is_created: true },
             });
           }),
           catchError(async (error) => CreateFailure({ error: error }))
@@ -71,11 +72,13 @@ export class ListingEffects {
           .pipe(
             map((result) => {
               return UpdateSuccess({
-                result: { ...result, is_update: true },
+                result: { ...result, is_updated: true },
                 uuid: payload.uuid,
               });
             }),
-            catchError(async (error) => CreateFailure({ error: error }))
+            catchError(async (error) =>
+              UpdateFailure({ error: error, uuid: payload.uuid })
+            )
           );
       })
     )
@@ -170,7 +173,11 @@ export class ListingEffects {
         return this.listingService
           .doUpdateLocation(action.location.listing, action.location)
           .pipe(
-            map((response) => UpdateLocationSuccess({ location: response }))
+            map((response) =>
+              UpdateLocationSuccess({
+                location: { ...response, is_updated: true },
+              })
+            )
           );
       })
     )
