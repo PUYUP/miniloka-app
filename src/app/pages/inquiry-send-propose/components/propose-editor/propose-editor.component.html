@@ -22,7 +22,7 @@
         <div>
           <ion-text
             color="dark"
-            [innerHTML]="inquiry?.result?.keyword"
+            [innerHTML]="inquiry?.result?.keyword | autolink"
             [ngStyle]="{ 'font-size': '16px' }"
           ></ion-text>
         </div>
@@ -31,16 +31,33 @@
           *ngIf="!sendOffer && inquiry?.result?.newest_offer"
           lines="full"
         >
+          <ion-item-divider lines="full" class="ion-no-padding">
+            <ion-label class="ion-text-wrap">
+              Kode rahasia
+              <p class="line">
+                Digunakan saat konsumen ingin menerima tawaran Anda.
+              </p>
+            </ion-label>
+
+            <ion-note slot="end" [ngStyle]="{ 'font-size': '15px' }">
+              <strong>{{ inquiry?.result?.newest_offer?.secret }}</strong>
+            </ion-note>
+          </ion-item-divider>
+
           <ion-item-divider class="ion-no-padding">
             <ion-label>Tawaran saat ini</ion-label>
-            <ion-buttons slot="end" (click)="changeOffer()">
+            <ion-buttons
+              *ngIf="!inquiry?.result?.newest_offer?.is_ordered"
+              slot="end"
+              (click)="changeOffer()"
+            >
               <ion-button
                 mode="ios"
                 size="small"
-                color="primary"
+                color="secondary"
                 fill="outline"
               >
-                Rubah tawaran
+                Rubah
               </ion-button>
             </ion-buttons>
           </ion-item-divider>
@@ -59,7 +76,7 @@
               }}"
             >
               <ion-label class="ion-text-wrap">
-                {{ item.inquiry_item }}
+                {{ item.label }}
 
                 <p
                   *ngIf="item.description"
@@ -82,24 +99,32 @@
                   Rp {{ item.cost | number }}
                 </strong>
 
-                <ion-icon
-                  *ngIf="!item.is_available"
-                  name="close-outline"
-                  color="danger"
-                ></ion-icon>
-
-                <ion-icon
-                  *ngIf="inquiry?.result?.newest_offer?.cost > 0"
-                  name="checkmark-outline"
-                  color="success"
-                ></ion-icon>
+                <div *ngIf="item.is_additional" class="ion-text-end">
+                  <ion-text color="medium">Item lain</ion-text>
+                </div>
               </ion-note>
+
+              <ion-icon
+                *ngIf="!item.is_available"
+                name="close-outline"
+                color="danger"
+                slot="end"
+              ></ion-icon>
+
+              <ion-icon
+                *ngIf="inquiry?.result?.newest_offer?.cost > 0"
+                name="checkmark-outline"
+                color="success"
+                slot="end"
+              ></ion-icon>
             </ion-item>
           </ng-container>
 
           <ion-item
             *ngIf="inquiry?.result?.newest_offer?.cost > 0"
-            lines="none"
+            [lines]="
+              inquiry?.result?.newest_offer?.is_ordered ? 'full' : 'none'
+            "
           >
             <ion-label class="ion-text-wrap">
               Tawar semuanya
@@ -121,6 +146,18 @@
               </strong>
             </ion-note>
           </ion-item>
+
+          <ion-item
+            *ngIf="inquiry?.result?.newest_offer?.is_ordered"
+            lines="none"
+            detail
+            button
+          >
+            <ion-label class="ion-text-wrap">
+              Diterima konsumen
+              <p class="line">Tawaran diterima lihat rincian</p>
+            </ion-label>
+          </ion-item>
         </ion-list>
 
         <form
@@ -132,13 +169,20 @@
             <ng-container formArrayName="offer_items">
               <ng-container
                 *ngFor="
-                  let item of inquiry?.result?.items;
+                  let item of offer_items().controls;
                   let last = last;
                   let i = index
                 "
                 [formGroupName]="i"
               >
                 <ion-item lines="full">
+                  <ion-checkbox
+                    *ngIf="!offerAll"
+                    slot="start"
+                    (ionChange)="availableChange(i)"
+                    formControlName="is_available"
+                  ></ion-checkbox>
+
                   <ion-note
                     *ngIf="offerAll"
                     slot="start"
@@ -147,38 +191,42 @@
                     {{ i + 1 }}
                   </ion-note>
 
-                  <ion-badge
+                  <ion-note
                     *ngIf="!offerAll"
                     slot="start"
-                    color="dark"
-                    [ngStyle]="{ 'margin-right': '5px' }"
+                    [ngStyle]="{ 'margin-right': '5px', 'font-size': '13px' }"
                   >
                     {{ i + 1 }}
-                  </ion-badge>
+                  </ion-note>
 
-                  <ion-label
-                    class="ion-text-wrap"
-                    [innerHTML]="item.label"
-                  ></ion-label>
+                  <ion-label class="ion-text-wrap">
+                    <ion-text [innerHTML]="item.value.label"></ion-text>
 
-                  <ion-checkbox
-                    *ngIf="!offerAll"
-                    slot="end"
-                    (ionChange)="availableChange(i)"
-                    formControlName="is_available"
-                  ></ion-checkbox>
+                    <p
+                      *ngIf="item.value?.is_additional"
+                      class="line"
+                      [ngStyle]="{ 'font-size': '12px', 'line-height': '1' }"
+                    >
+                      <ion-text color="medium">Item lain</ion-text>
+                    </p>
+                  </ion-label>
                 </ion-item>
 
-                <ng-container
-                  *ngIf="
-                    formGroup.controls['offer_items'].controls[i].value
-                      .is_available && !offerAll
-                  "
-                >
+                <ng-container *ngIf="item.value.is_available && !offerAll">
                   <ion-item lines="full">
                     <ion-label position="stacked" class="ion-text-wrap">
                       Penawaran
+                      {{ item.value.is_additional ? "lain" : "" }}
                     </ion-label>
+
+                    <ion-input
+                      *ngIf="
+                        item.value.is_additional && !item.value.inquiry_item
+                      "
+                      formControlName="label"
+                      class="ion-no-margin ion-no-padding"
+                      placeholder="Nama item"
+                    ></ion-input>
 
                     <ion-input
                       formControlName="cost"
@@ -192,11 +240,21 @@
                       formControlName="description"
                       class="ion-no-margin ion-no-padding"
                       placeholder="Catatan (tidak wajib)"
+                      [autoGrow]="autoGrow"
                     ></ion-textarea>
                   </ion-item>
                 </ng-container>
               </ng-container>
             </ng-container>
+
+            <ion-item lines="full" (click)="addNewItem()" button>
+              <ion-icon name="add-outline" slot="start"></ion-icon>
+
+              <ion-label class="ion-text-wrap">
+                Tawarkan item lain
+                <p class="line">Kami ada ini dan itu, berminat?</p>
+              </ion-label>
+            </ion-item>
 
             <ion-item lines="full">
               <ion-checkbox
@@ -242,6 +300,7 @@
                   class="ion-no-margin ion-no-padding"
                   placeholder="Catatan (tidak wajib)"
                   formControlName="description"
+                  [autoGrow]="autoGrow"
                 ></ion-textarea>
               </ion-item>
             </ng-container>
@@ -277,6 +336,8 @@
                 fill="clear"
                 (click)="changeOffer()"
                 expand="block"
+                mode="ios"
+                color="secondary"
               >
                 Batal
               </ion-button>
@@ -297,7 +358,11 @@
         </ion-label>
 
         <ion-buttons slot="end">
-          <ion-button (click)="openMap(inquiry?.result?.location)">
+          <ion-button
+            (click)="openMap(inquiry?.result?.location)"
+            mode="ios"
+            color="secondary"
+          >
             Lihat di peta
           </ion-button>
         </ion-buttons>

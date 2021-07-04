@@ -27,6 +27,8 @@ export class ProposeEditorComponent implements OnInit {
   inquirySubscribe: any;
   inquiryItems: any;
   newestOffer: any;
+  refreshEvent: any;
+  autoGrow: boolean = false;
 
   formGroup: any = FormGroup;
   offerAll: boolean = false;
@@ -62,6 +64,8 @@ export class ProposeEditorComponent implements OnInit {
     );
 
     this.inquirySubscribe = this.inquiry$.subscribe((state: any) => {
+      if (this.refreshEvent) this.refreshEvent.target.complete();
+
       if (state?.result?.uuid && state?.result?.items.length > 0) {
         this.newestOffer = state?.result?.newest_offer;
         this.inquiryItems = state?.result?.items;
@@ -75,32 +79,45 @@ export class ProposeEditorComponent implements OnInit {
               description: this.newestOffer?.description,
               can_attend: this.newestOffer?.can_attend,
             });
+
+            if (this.offerAll) {
+              this.formGroup.controls['cost'].setValidators([
+                Validators.required,
+              ]);
+            }
           });
         }
 
         let i = 0;
+        let items = state?.result?.items;
+        let newest = this.newestOffer?.items.slice(items.length);
+        let items_with_newest = newest ? items.concat(newest) : items;
 
-        for (let item of state?.result?.items) {
+        for (let item of items_with_newest) {
           let offerItem = this.newestOffer?.uuid
             ? this.newestOffer?.items[i]
             : null;
 
-          let o = this.fb.group({
-            inquiry_item: [item?.uuid],
-            cost: [offerItem ? (offerItem.cost > 0 ? offerItem.cost : '') : ''],
-            description: [offerItem?.description ? offerItem.description : ''],
-            is_available: [offerItem ? offerItem.is_available : false],
-          });
+          let data = {
+            uuid: [offerItem?.uuid],
+            label: [item?.label],
+            cost: [
+              offerItem ? (offerItem.cost > 0 ? offerItem.cost : '') : '', // value
+              offerItem?.is_available && !this.offerAll
+                ? [Validators.required]
+                : [], // validator
+            ],
+            description: [offerItem?.description ? offerItem?.description : ''],
+            is_available: [offerItem ? offerItem?.is_available : false],
+            is_additional: [offerItem ? offerItem?.is_additional : false],
+          };
 
-          let index = this.offer_items().value.findIndex(
-            (d: any) => d.inquiry_item == item.uuid
-          );
-
-          if (index == -1) {
-            this.offer_items().push(o);
-          } else {
-            this.offer_items().setControl(i, o);
+          if (item) {
+            if (!('inquiry_item' in item)) data['inquiry_item'] = item?.uuid;
           }
+
+          let o = this.fb.group(data);
+          this.offer_items().setControl(i, o);
 
           i++;
         }
@@ -108,19 +125,27 @@ export class ProposeEditorComponent implements OnInit {
     });
   }
 
-  availableChange(index: number) {
-    let value =
-      this.formGroup.controls['offer_items'].controls[index].value.is_available;
+  ionViewDidEnter() {
+    this.autoGrow = true;
+  }
 
-    if (value) {
+  availableChange(index: number) {
+    let value = this.formGroup.controls['offer_items'].controls[index].value;
+    let is_available = value?.is_available;
+
+    if (is_available) {
       this.offer_items()
         .controls[index].get('cost')
         .setValidators([Validators.required]);
     } else {
-      this.offer_items().controls[index].get('cost').clearValidators();
+      this.offer_items().controls[index]?.get('cost').clearValidators();
+
+      // if additional item removed if not checked
+      if (!value?.uuid && !value.inquiry_item)
+        this.offer_items().removeAt(index);
     }
 
-    this.offer_items().controls[index].get('cost').updateValueAndValidity();
+    this.offer_items().controls[index]?.get('cost').updateValueAndValidity();
   }
 
   initForm() {
@@ -171,7 +196,7 @@ export class ProposeEditorComponent implements OnInit {
         x.is_available = true;
       }
 
-      if (!item.is_available) x.cost = 0;
+      if (!item?.is_available) x.cost = 0;
 
       i++;
       return x;
@@ -204,6 +229,27 @@ export class ProposeEditorComponent implements OnInit {
     window.open(
       'https://www.google.com/maps/search/?api=1&query=' + destination
     );
+  }
+
+  newItem(): FormGroup {
+    return this.fb.group({
+      uuid: [''],
+      label: ['', [Validators.required]],
+      cost: ['', [Validators.required]],
+      description: [''],
+      is_available: [true],
+      is_additional: [true],
+    });
+  }
+
+  // Additional item
+  addNewItem() {
+    this.offer_items().push(this.newItem());
+  }
+
+  refresh(event: any) {
+    this.refreshEvent = event;
+    this.store.dispatch(Retrieve({ uuid: this.inquiry_uuid }));
   }
 
   ngOnDestroy() {

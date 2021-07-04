@@ -1,0 +1,53 @@
+<ion-button
+  *ngIf="visibility != 'public'"
+  expand="block"
+  color="secondary"
+  mode="ios"
+  (click)="addProduct()"
+>
+  Submit Produk / Layanan
+</ion-button>
+
+<ng-container *ngIf="products$ | async as product">
+  <div
+    *ngIf="product?.status == 'loading'"
+    class="ion-margin ion-padding ion-text-center"
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ng-container *ngIf="product?.status == 'loaded'">
+    <ion-list lines="full">
+      <ion-item-divider class="ion-no-padding">
+        <ion-label>Produk / Layanan</ion-label>
+      </ion-item-divider>
+
+      <ng-container *ngFor="let item of product?.results; let last = last">
+        <ion-item [lines]="last ? 'none' : 'full'">
+          <ion-label class="ion-text-wrap">
+            {{ item.label }}
+            <p *ngIf="item.description" [innerHTML]="item.description"></p>
+          </ion-label>
+
+          <ion-buttons *ngIf="visibility != 'public'" slot="end">
+            <ion-button color="medium" (click)="showTool(item)">
+              <ion-icon name="ellipsis-vertical" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ng-container>
+
+      <ion-item *ngIf="product?.results.length == 0" class="ion-no-padding">
+        <ion-label>Belum ada produk / layanan</ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content
+        loadingSpinner="bubbles"
+        loadingText="Loading more data..."
+      >
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </ng-container>
+</ng-container>

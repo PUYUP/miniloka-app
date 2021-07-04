@@ -4,11 +4,15 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
 
-    <ion-title size="small">Rincian Tawaran</ion-title>
+    <ion-title size="small">Rincian Penawaran</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ng-container *ngIf="propose$ | async as propose">
     <div
       *ngIf="propose?.status != 'loaded'"
@@ -19,41 +23,55 @@
 
     <ng-container *ngIf="propose?.status == 'loaded'">
       <ion-list lines="full">
-        <ion-item-divider color="light">
-          <ion-label>Permintaan</ion-label>
-        </ion-item-divider>
-
         <ng-container
-          *ngFor="let item of propose?.result?.newest_offer?.items; let last = last;"
+          *ngFor="let item of propose?.result?.newest_offer?.items; let last = last; let index = index;"
         >
-          <ion-item>
+          <ion-item
+            [disabled]="(item.cost > 0 ? false : true) || propose?.result?.newest_offer?.is_ordered"
+          >
+            <ion-checkbox
+              *ngIf="propose?.result?.newest_offer?.cost == 0"
+              slot="start"
+              [(ngModel)]="selectedOfferItems[index][item.uuid]"
+            ></ion-checkbox>
+
+            <ion-checkbox
+              *ngIf="propose?.result?.newest_offer?.cost > 0"
+              slot="start"
+              [checked]="true"
+            ></ion-checkbox>
+
             <ion-label class="ion-text-wrap">
-              {{ item.inquiry_item }}
+              {{ item.label }}
               <p *ngIf="item.description" [innerHTML]="item.description"></p>
             </ion-label>
 
-            <ion-note
-              slot="end"
-              color="danger"
-              [ngStyle]="{'font-size': '13px'}"
-            >
-              <strong *ngIf="propose?.result?.newest_offer?.cost == 0">
-                <ion-text *ngIf="item.is_available">
-                  Rp {{ item.cost | number }}
-                </ion-text>
-
-                <ion-icon
-                  *ngIf="!item.is_available"
-                  name="close-outline"
-                ></ion-icon>
-              </strong>
+            <ng-container *ngIf="propose?.result?.newest_offer?.cost == 0">
+              <ion-note
+                *ngIf="item.is_available"
+                slot="end"
+                color="danger"
+                [ngStyle]="{'font-size': '13px'}"
+              >
+                <strong>Rp {{ item.cost | number }}</strong>
+                <div *ngIf="item.is_additional" class="ion-text-end">
+                  <ion-text color="medium">Item lain</ion-text>
+                </div>
+              </ion-note>
 
               <ion-icon
-                *ngIf="propose?.result?.newest_offer?.cost > 0"
-                color="success"
-                name="checkmark-outline"
+                *ngIf="!item.is_available"
+                name="close-outline"
+                slot="end"
               ></ion-icon>
-            </ion-note>
+            </ng-container>
+
+            <ion-icon
+              *ngIf="propose?.result?.newest_offer?.cost > 0"
+              color="success"
+              name="checkmark-outline"
+              slot="end"
+            ></ion-icon>
           </ion-item>
         </ng-container>
 
@@ -61,8 +79,7 @@
           <ion-label class="ion-text-wrap">
             Bersedia datang
             <p class="line">
-              Penawar bersedia datang ke lokasi Anda. Hubungi penawar terlebih
-              dulu.
+              Mungkin bisa ke lokasi Anda. Hubungi penawar terlebih dulu.
             </p>
           </ion-label>
 
@@ -99,8 +116,37 @@
           </ion-note>
         </ion-item>
 
+        <ion-item
+          *ngIf="!propose?.result?.newest_offer?.is_ordered"
+          button
+          (click)="confirmOffer()"
+        >
+          <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+          <ion-label>
+            Terima tawaran & ajukan cicilan
+            <p class="line">Hanya yang dicentang</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item
+          *ngIf="propose?.result?.newest_offer?.is_ordered"
+          [routerLink]="['/order-detail', propose?.result?.newest_offer?.order?.uuid]"
+          button
+          detail
+        >
+          <ion-icon
+            name="checkmark-done-outline"
+            slot="start"
+            color="success"
+          ></ion-icon>
+          <ion-label>
+            Anda menerima tawaran ini
+            <p class="line">Tap untuk melihat rincian</p>
+          </ion-label>
+        </ion-item>
+
         <ion-item-divider color="light">
-          <ion-label>Hubungi penawar</ion-label>
+          <ion-label><strong>Penawar</strong></ion-label>
         </ion-item-divider>
 
         <ion-item>
@@ -149,11 +195,7 @@
           </ion-label>
         </ion-item>
 
-        <ion-item-divider color="light">
-          <ion-label>Lokasi Penawar</ion-label>
-        </ion-item-divider>
-
-        <ion-item lines="none">
+        <ion-item>
           <ion-label class="ion-text-wrap">
             <table [ngStyle]="{'font-size': '14px'}">
               <tr>
@@ -223,6 +265,21 @@
                   {{ propose?.result?.listing?.location?.latitude ?
                   propose?.result?.listing?.location?.latitude : "&mdash;" }}
                 </td>
+
+                <td
+                  *ngIf="propose?.result?.listing?.location?.latitude"
+                  rowspan="2"
+                  class="ion-padding-start"
+                >
+                  <ion-button
+                    mode="ios"
+                    size="small"
+                    color="secondary"
+                    (click)="openMap(propose?.result?.listing?.location)"
+                  >
+                    <ion-text>Lihat Map</ion-text>
+                  </ion-button>
+                </td>
               </tr>
 
               <tr>
@@ -230,20 +287,6 @@
                 <td class="ion-padding-start">
                   {{ propose?.result?.listing?.location?.longitude ?
                   propose?.result?.listing?.location?.longitude : "&mdash;" }}
-
-                  <ion-button
-                    *ngIf="propose?.result?.listing?.location?.latitude"
-                    mode="ios"
-                    size="small"
-                    color="light"
-                    (click)="openMap(propose?.result?.listing?.location)"
-                  >
-                    <ion-icon
-                      name="map-outline"
-                      [ngStyle]="{'margin-right': '5px', 'position': 'relative', 'top': '1px'}"
-                    ></ion-icon>
-                    <ion-text>Buka Google Map</ion-text>
-                  </ion-button>
                 </td>
               </tr>
             </table>

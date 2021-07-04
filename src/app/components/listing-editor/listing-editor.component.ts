@@ -18,6 +18,7 @@ export class ListingEditorComponent implements OnInit {
   listing$: Observable<any>;
   formGroup: FormGroup;
   submitLoading: boolean = false;
+  autoGrow: boolean = false;
 
   constructor(private fb: FormBuilder, private store: Store<AppState>) {
     this.listing$ = this.store.pipe(select(SelectListing));
@@ -39,6 +40,10 @@ export class ListingEditorComponent implements OnInit {
         ...this.listing?.contact,
       });
     }
+  }
+
+  ionViewDidEnter() {
+    this.autoGrow = true;
   }
 
   initForm() {

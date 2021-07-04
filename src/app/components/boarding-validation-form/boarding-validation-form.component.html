@@ -25,7 +25,13 @@
           *ngIf="challenge != 'change_msisdn' && challenge != 'change_email'"
           slot="end"
         >
-          <ion-button size="small" fill="outline" mode="ios" (click)="reset()">
+          <ion-button
+            size="small"
+            fill="outline"
+            color="dark"
+            mode="ios"
+            (click)="reset()"
+          >
             Ganti
           </ion-button>
         </ion-buttons>
@@ -49,6 +55,7 @@
             expand="block"
             color="dark"
             fill="clear"
+            mode="ios"
             (click)="resend()"
           >
             Resend kode
@@ -59,7 +66,8 @@
           <ion-button
             type="submit"
             expand="block"
-            color="primary"
+            color="secondary"
+            mode="ios"
             [disabled]="formGroup.invalid"
           >
             <ng-container *ngIf="securecodeValidate$ | async as validate">

@@ -1,0 +1,76 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="light">
+    <ion-title size="small"> Semua bisnis </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-item-divider color="medium">
+    <ion-label>Bisnis dalam radius 15 km</ion-label>
+  </ion-item-divider>
+
+  <ng-container *ngIf="!locationCoords?.latitude">
+    <div class="ion-padding ion-margin ion-text-center">
+      <p>
+        <ion-text color="medium">
+          Diharuskan mengaktifkan lokasi untuk melihat bisnis disekitar Anda
+        </ion-text>
+      </p>
+
+      <ion-button
+        mode="ios"
+        (click)="activateLocation()"
+        size="small"
+        color="secondary"
+      >
+        Aktifkan Lokasi
+      </ion-button>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="partners$ | async as partner">
+    <ion-list lines="full">
+      <ion-item
+        *ngFor="let item of partner?.results; let last = last"
+        detail="true"
+        [routerLink]="['/partner-detail', item.uuid]"
+        [lines]="last ? 'none': 'full'"
+      >
+        <ion-label class="ion-text-wrap">
+          {{ item.label }}
+          <p
+            *ngIf="item.description"
+            class="line"
+            [innerHTML]="item.description"
+          ></p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <div
+      *ngIf="partner?.status == 'loading'"
+      class="ion-padding ion-margin ion-text-center"
+    >
+      <ion-spinner></ion-spinner>
+    </div>
+
+    <p
+      *ngIf="partner?.results.length == 0 && partner?.status == 'loaded'"
+      class="ion-text-center"
+    >
+      Belum ada bisnis disekitar Anda
+    </p>
+  </ng-container>
+
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

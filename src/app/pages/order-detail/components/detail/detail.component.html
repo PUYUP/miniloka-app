@@ -1,0 +1,43 @@
+<ng-container *ngIf="order$ | async as order">
+  <div
+    *ngIf="order?.status == 'loading'"
+    class="ion-text-center ion-padding ion-margin"
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ng-container *ngIf="order?.status == 'loaded'">
+    <ion-list lines="full">
+      <ng-container *ngFor="let item of order?.result?.items; let last = last">
+        <ion-item [lines]="last ? 'none' : 'full'">
+          <ion-label class="ion-text-wrap">{{ item.label }}</ion-label>
+
+          <ion-note
+            *ngIf="order?.result?.cost == 0"
+            slot="end"
+            color="danger"
+            [ngStyle]="{ 'font-size': '14px' }"
+          >
+            <strong>{{ item.cost | number }}</strong>
+          </ion-note>
+
+          <ion-icon
+            *ngIf="order?.result?.cost > 0"
+            slot="end"
+            name="checkmark-outline"
+            color="success"
+          ></ion-icon>
+        </ion-item>
+      </ng-container>
+    </ion-list>
+
+    <ion-button
+      expand="block"
+      color="secondary"
+      mode="ios"
+      (click)="requestInstallment()"
+    >
+      Ajukan Cicilan
+    </ion-button>
+  </ng-container>
+</ng-container>

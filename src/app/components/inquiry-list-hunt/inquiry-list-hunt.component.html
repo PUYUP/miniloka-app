@@ -16,14 +16,17 @@
       <ion-card-content>
         <div>
           <ion-text
+            [ngStyle]="{ 'font-size': '15px' }"
+            [innerHTML]="inquiry.keyword | autolink"
             color="dark"
-            [innerHTML]="inquiry.keyword"
-            [ngStyle]="{ 'font-size': '16px' }"
           ></ion-text>
         </div>
 
         <ion-list>
-          <ion-item-divider class="ion-no-padding">Rincian</ion-item-divider>
+          <ion-item-divider class="ion-no-padding">
+            <ion-label>Permintaan</ion-label>
+          </ion-item-divider>
+
           <ng-container
             *ngFor="let item of inquiry.items; let last = last; let i = index"
           >
@@ -33,11 +36,20 @@
               </ion-note>
 
               <ion-label
-                [innerHTML]="item.label"
+                [innerHTML]="item.label | autolink"
                 class="ion-text-wrap"
               ></ion-label>
             </ion-item>
           </ng-container>
+
+          <ion-item
+            *ngIf="inquiry.newest_item_additional_count > 0"
+            lines="full"
+          >
+            <ion-label>
+              {{ inquiry.newest_item_additional_count }} item lain
+            </ion-label>
+          </ion-item>
         </ion-list>
 
         <ion-row class="ion-no-padding ion-no-margin ion-align-items-center">
@@ -89,10 +101,11 @@
     *ngIf="data?.status == 'loaded' && data?.results.length == 0"
     class="ion-text-center"
   >
-    <ion-text color="danger">
-      <small>
-        Permintaan dengan kata kunci "{{ keyword }}" tidak ditemukan.
-      </small>
+    <ion-text>
+      Permintaan konsumen dengan kata kunci
+      <strong>"{{ keyword }}"</strong> dalam radius 15 kilometer belum ada.
+      <br /><br />Harap bersabar ya karena tim Mini Loka masih terus
+      mensosialisasikan layanan ini kepada masyarakat luas.
     </ion-text>
   </p>
 

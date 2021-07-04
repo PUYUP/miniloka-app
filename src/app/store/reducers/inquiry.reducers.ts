@@ -49,44 +49,45 @@ const _inquiryReducer = createReducer(
   }),
 
   // UPDATE
+  /*
   on(inquiryActions.Update, (state, payload) => {
-    let results = [...state.results];
-    let index = results.findIndex((d: any) => d.uuid == payload.uuid);
-
+    let results_state = [...state.results];
     let items = payload.data.items.filter((d: any) => {
       if (!d?.is_delete) return d;
     });
 
     // replace items
-    let data = { ...payload.data };
-    data.items = items;
+    let data = { ...payload.data, items: items };
 
-    results[index] = { ...results[index], ...data };
+    let results = results_state.map((d: any) => {
+      if (d.uuid == payload?.uuid) d = { ...d, ...data };
+      return d;
+    });
 
     return {
       ...state,
-      result: payload.data,
+      result: { ...state.result, ...payload.data },
       results: results,
-      status: Statuses.LOADING,
     };
   }),
+  */
   on(inquiryActions.UpdateSuccess, (state, payload) => {
-    let results = [...state.results];
-    let index = results.findIndex((d: any) => d.uuid == state?.result.uuid);
-
-    results[index] = { ...results[index], ...payload.result };
+    let results_state = [...state.results];
+    let results = results_state.map((d: any) => {
+      if (d.uuid == payload?.result.uuid) d = { ...d, ...payload?.result };
+      return d;
+    });
 
     return {
       ...state,
+      result: payload?.result,
       results: results,
-      status: Statuses.LOADED,
     };
   }),
   on(inquiryActions.UpdateFailure, (state, error) => {
     return {
       ...state,
       error: error,
-      status: Statuses.UNINITIALIZED,
     };
   }),
 

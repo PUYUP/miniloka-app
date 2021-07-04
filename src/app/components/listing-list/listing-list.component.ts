@@ -21,19 +21,17 @@ export class ListingListComponent implements OnInit {
     private modalController: ModalController,
     private platform: Platform
   ) {
-    this.store.dispatch(Get());
+    this.store.dispatch(Get({}));
     this.listings$ = this.store.pipe(select(SelectListings));
 
-    if (this.modalController.getTop()) {
-      this.platform.backButton.subscribeWithPriority(
-        10,
-        (processNextHandler) => {
-          this.modalController.dismiss();
+    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+      // Hide modal
+      this.modalController
+        .getTop()
+        .then((v) => (v ? this.modalController.dismiss() : null));
 
-          processNextHandler();
-        }
-      );
-    }
+      processNextHandler();
+    });
   }
 
   ngOnInit() {}
@@ -58,6 +56,6 @@ export class ListingListComponent implements OnInit {
   }
 
   refresh() {
-    this.store.dispatch(Get());
+    this.store.dispatch(Get({}));
   }
 }

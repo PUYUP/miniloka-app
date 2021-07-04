@@ -23,6 +23,8 @@
       <ion-buttons slot="end">
         <ion-button
           size="small"
+          mode="ios"
+          color="secondary"
           (click)="saveChange('username')"
           [disabled]="dataCopy.username == data.username"
         >
@@ -42,6 +44,8 @@
       <ion-buttons slot="end">
         <ion-button
           size="small"
+          mode="ios"
+          color="secondary"
           (click)="saveChange('email')"
           [disabled]="dataCopy.email == data.email"
         >
@@ -50,6 +54,7 @@
       </ion-buttons>
     </ion-item>
 
+    <!--
     <ion-item class="ion-margin-top">
       <ion-label position="stacked">Nomor ponsel</ion-label>
       <ion-input
@@ -68,5 +73,6 @@
         </ion-button>
       </ion-buttons>
     </ion-item>
+    -->
   </ion-list>
 </ion-content>

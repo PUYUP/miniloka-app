@@ -20,6 +20,7 @@ export class InquiryEditorComponent implements OnInit {
   formGroup: FormGroup;
   itemValue: string;
   itemRemoved: any = [];
+  autoGrow: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +40,10 @@ export class InquiryEditorComponent implements OnInit {
     this.initForm();
   }
 
+  ionViewDidEnter() {
+    this.autoGrow = true;
+  }
+
   initForm() {
     this.formGroup = this.fb.group({
       keyword: [this.instance ? this.instance?.keyword : ''],
@@ -56,7 +61,7 @@ export class InquiryEditorComponent implements OnInit {
           this.items().push(o);
         }
       }
-    }, 500);
+    });
   }
 
   items(): FormArray {

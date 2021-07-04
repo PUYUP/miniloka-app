@@ -51,38 +51,40 @@ const _listingReducer = createReducer(
   // UPDATE
   on(listingActions.Update, (state, payload) => {
     let results = [...state.results];
-    let index = results.findIndex((d: any) => d.uuid == payload.uuid);
+    let res = results.map((d: any) => {
+      if (d.uuid == payload.data?.uuid) {
+        d = { ...d, ...payload.data };
+      }
 
-    // replace items
-    let data = { ...payload.data };
-
-    results[index] = { ...results[index], ...data };
+      return d;
+    });
 
     return {
       ...state,
       result: payload.data,
-      results: results,
-      status: Statuses.LOADING,
+      results: res,
     };
   }),
   on(listingActions.UpdateSuccess, (state, payload) => {
     let results = [...state.results];
-    let index = results.findIndex((d: any) => d.uuid == state?.result.uuid);
+    let res = results.map((d: any) => {
+      if (d.uuid == payload?.result?.uuid) {
+        d = { ...d, ...payload?.result };
+      }
 
-    results[index] = { ...results[index], ...payload.result };
+      return d;
+    });
 
     return {
       ...state,
       result: payload.result,
-      results: results,
-      status: Statuses.LOADED,
+      results: res,
     };
   }),
   on(listingActions.UpdateFailure, (state, error) => {
     return {
       ...state,
       error: error,
-      status: Statuses.UNINITIALIZED,
     };
   }),
 

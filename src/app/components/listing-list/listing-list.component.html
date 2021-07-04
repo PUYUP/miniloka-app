@@ -1,19 +1,24 @@
-<ion-list lines="full">
-  <ion-item-divider>
-    <ion-text>Bisnis saya</ion-text>
-    <ion-buttons slot="end">
+<ion-grid>
+  <ion-row class="ion-justify-content-between ion-align-items-center">
+    <ion-col>
+      <ion-text>Bisnis saya</ion-text>
+    </ion-col>
+
+    <ion-col class="ion-text-right">
       <ion-button
         size="small"
-        color="primary"
+        color="secondary"
         mode="ios"
         (click)="showEditor()"
       >
         <ion-icon name="add-outline" slot="start"></ion-icon>
-        <ion-text>Daftarkan</ion-text>
+        <ion-text>Submit</ion-text>
       </ion-button>
-    </ion-buttons>
-  </ion-item-divider>
+    </ion-col>
+  </ion-row>
+</ion-grid>
 
+<ion-list lines="full">
   <ng-container *ngIf="listings$ | async as listing">
     <ion-item
       *ngFor="let item of listing?.results"
@@ -21,16 +26,20 @@
       [routerLink]="['/listing-inquiry', item.uuid]"
     >
       <ion-label class="ion-text-wrap">
-        <div>{{ item.label }}</div>
-        <div [ngStyle]="{ 'margin-top': '2px', 'font-size': '12px' }">
+        {{ item.label }}
+
+        <p [ngStyle]="{ 'font-size': '13px' }" class="line">
           <ion-text color="medium" size="small">
             Kata kunci: {{ item.keyword }}
           </ion-text>
-        </div>
+        </p>
       </ion-label>
 
-      <ion-badge slot="end">
-        {{ item?.state?.status_display }}
+      <ion-badge
+        slot="end"
+        [color]="item?.status == 'pending' ? 'medium' : 'success'"
+      >
+        <small>{{ item?.status_display }}</small>
       </ion-badge>
     </ion-item>
   </ng-container>
@@ -48,8 +57,6 @@
     *ngIf="listing?.results.length == 0 && listing?.status == 'loaded'"
     class="ion-text-center"
   >
-    <ion-text color="danger">
-      <small>Belum mendaftarkan bisnis</small>
-    </ion-text>
+    Belum ada bisnis.
   </p>
 </ng-container>

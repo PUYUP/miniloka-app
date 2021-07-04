@@ -6,6 +6,7 @@ import {
   GetOfferPropose,
 } from 'src/app/store/actions/propose.actions';
 import { AppState } from 'src/app/store/reducers';
+import { RetrieveInquiry } from 'src/app/store/selectors/inquiry.selectors';
 import { SelectProposes } from 'src/app/store/selectors/propose.selectors';
 
 @Component({
@@ -16,7 +17,9 @@ import { SelectProposes } from 'src/app/store/selectors/propose.selectors';
 export class OfferListComponent implements OnInit {
   @Input('uuid') uuid: string;
 
+  inquiry$: Observable<any>;
   proposes$: Observable<any>;
+
   loadMoreEvent: any;
   next: string;
   previous: string;
@@ -35,6 +38,10 @@ export class OfferListComponent implements OnInit {
         this.loadMoreEvent.target.disabled = !this.next ? true : false;
       }
     });
+
+    this.inquiry$ = this.store.pipe(
+      select(RetrieveInquiry, { uuid: this.uuid })
+    );
   }
 
   refresh() {

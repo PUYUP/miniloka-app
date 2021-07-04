@@ -43,7 +43,10 @@ export const DeleteFailure = createAction(
 );
 
 // GET
-export const Get = createAction(`${TYPE} Get`);
+export const Get = createAction(
+  `${TYPE} Get`,
+  props<{ visibility?: string; coordinate?: any }>()
+);
 export const GetSuccess = createAction(
   `${TYPE} Get Success`,
   props<{
@@ -55,7 +58,12 @@ export const GetSuccess = createAction(
 );
 export const GetLoadMore = createAction(
   `${TYPE} Get Load More`,
-  props<{ next?: string; previous?: string; isLoadMore?: boolean }>()
+  props<{
+    next?: string;
+    previous?: string;
+    isLoadMore?: boolean;
+    coordinate?: any;
+  }>()
 );
 
 // RETRIEVE

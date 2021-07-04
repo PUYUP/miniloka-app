@@ -65,7 +65,7 @@ export const GetOfferPropose = createAction(
 // RETRIEVE
 export const Retrieve = createAction(
   `${TYPE} Retrieve`,
-  props<{ uuid: string }>()
+  props<{ uuid: string; is_refresh?: boolean }>()
 );
 export const RetrieveSuccess = createAction(
   `${TYPE} Retrieve Success`,

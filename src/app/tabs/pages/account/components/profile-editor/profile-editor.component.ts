@@ -14,6 +14,7 @@ export class ProfileEditorComponent implements OnInit {
   @Input('data') data: any;
 
   formGroup: any = FormGroup;
+  autoGrow: boolean = false;
 
   constructor(
     public modalController: ModalController,
@@ -21,15 +22,20 @@ export class ProfileEditorComponent implements OnInit {
     private fb: FormBuilder,
     private store: Store<AppState>
   ) {
-    if (this.modalController.getTop()) {
-      this.platform.backButton.subscribeWithPriority(10, () => {
-        this.dismiss();
-      });
-    }
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      // Hide modal
+      this.modalController
+        .getTop()
+        .then((v) => (v ? this.modalController.dismiss() : null));
+    });
   }
 
   ngOnInit() {
     this.initForm();
+  }
+
+  ionViewDidEnter() {
+    this.autoGrow = true;
   }
 
   initForm() {
@@ -43,16 +49,15 @@ export class ProfileEditorComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.modalController.getTop()) {
-      this.dismiss();
-    }
-
+    this.dismiss();
     this.store.dispatch(UpdateProfile({ profile: this.formGroup.value }));
   }
 
   dismiss() {
-    this.modalController.dismiss({
-      dismissed: true,
-    });
+    this.modalController
+      .getTop()
+      .then((v) =>
+        v ? this.modalController.dismiss({ dimissed: true }) : null
+      );
   }
 }

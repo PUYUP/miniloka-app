@@ -6,7 +6,13 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <ion-list lines="full">
+  <ion-list *ngIf="propose?.status == 'loaded'" lines="full">
+    <ng-container *ngIf="inquiry$ | async as inquiry">
+      <ion-item-divider class="ion-no-padding">
+        <ion-label>{{ inquiry?.result?.propose_count }} Penawaran</ion-label>
+      </ion-item-divider>
+    </ng-container>
+
     <ng-container *ngFor="let item of propose?.results; let last = last">
       <ion-item
         detail
@@ -14,7 +20,9 @@
         [routerLink]="['/propose-detail', item.uuid]"
         button
       >
-        <ion-label> {{ item.listing.label }}</ion-label>
+        <ion-label>
+          {{ item.listing.label }}
+        </ion-label>
 
         <ion-note slot="end" class="ion-no-margin">
           <ion-text [ngStyle]="{ 'margin-right': '5px' }">
@@ -24,6 +32,15 @@
           <ion-text color="danger">
             Rp {{ item.newest_offer_cost | number }}
           </ion-text>
+
+          <div
+            *ngIf="item.newest_item_additional_count > 0"
+            class="ion-text-end"
+          >
+            <ion-text color="medium">
+              {{ item.newest_item_additional_count }} item lain
+            </ion-text>
+          </div>
         </ion-note>
       </ion-item>
     </ng-container>

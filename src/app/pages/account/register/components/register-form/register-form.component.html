@@ -22,7 +22,13 @@
       ></ion-input>
 
       <ion-buttons slot="end">
-        <ion-button size="small" fill="outline" mode="ios" (click)="reset()">
+        <ion-button
+          size="small"
+          fill="outline"
+          mode="ios"
+          color="dark"
+          (click)="reset()"
+        >
           Ganti
         </ion-button>
       </ion-buttons>
@@ -61,7 +67,8 @@
   <ion-button
     type="submit"
     expand="block"
-    color="primary"
+    color="secondary"
+    mode="ios"
     class="ion-margin-top"
     [disabled]="formGroup.invalid"
   >

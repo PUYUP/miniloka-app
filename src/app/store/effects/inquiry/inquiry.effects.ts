@@ -15,6 +15,7 @@ import {
   Retrieve,
   RetrieveSuccess,
   Update,
+  UpdateFailure,
   UpdateSuccess,
 } from '../../actions/inquiry.actions';
 
@@ -55,7 +56,7 @@ export class InquiryEffects {
                 result: result,
               });
             }),
-            catchError(async (error) => CreateFailure({ error: error }))
+            catchError(async (error) => UpdateFailure({ error: error }))
           );
       })
     )

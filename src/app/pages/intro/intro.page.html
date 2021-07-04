@@ -10,14 +10,14 @@
       <ion-col size="7">
         <div class="ion-text-center">
           <h1 class="ion-no-margin"><strong>Mini Loka</strong></h1>
-          <p>e-Permintaan Konsumen ke Bisnis Lokal</p>
+          <p>e-Permintaan Konsumen ke Bisnis Lokal / UMKM</p>
 
           <p>
             <small>
               <strong>Konsumen</strong> <br />
               <ion-text color="medium">
-                <i>Posting</i> permintaan. Stop berkeliling ke banyak toko.
-                Tidak menunggu lama karena barang ada disekitar Anda.
+                Kirim permintaan. Stop berkeliling. Tidak menunggu lama bisnis
+                lokal siap membantu. Ajukan cicilan pembayaran.
               </ion-text>
             </small>
           </p>
@@ -26,8 +26,8 @@
             <small>
               <strong>Bisnis Lokal</strong> <br />
               <ion-text color="medium">
-                Pantau permintaan konsumen disekitar bisnis Anda. Kirim
-                penawaran terbaik dan tingkatkan penjualan segera!
+                Amati permintaan konsumen disekitar lokasi bisnis. Kirim
+                penawaran terbaik dan tingkatkan penjualan.
               </ion-text>
             </small>
           </p>
@@ -37,7 +37,9 @@
               <ion-button
                 color="success"
                 expand="block"
+                size="small"
                 [routerLink]="['/login']"
+                mode="ios"
               >
                 <ion-icon name="log-in" slot="start"></ion-icon>
                 <ion-text>Masuk</ion-text>
@@ -46,9 +48,11 @@
 
             <ion-col size="6">
               <ion-button
-                color="primary"
+                color="secondary"
                 expand="block"
+                size="small"
                 [routerLink]="['/register']"
+                mode="ios"
               >
                 <ion-icon name="person-add" slot="start"></ion-icon>
                 <ion-text>Daftar</ion-text>

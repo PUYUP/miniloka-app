@@ -28,10 +28,10 @@ export class SecurityBoardingComponent implements OnInit {
   }
 
   dismiss() {
-    if (this.modalController.getTop()) {
-      this.modalController.dismiss({
-        dismissed: true,
-      });
-    }
+    this.modalController
+      .getTop()
+      .then((v) =>
+        v ? this.modalController.dismiss({ dimissed: true }) : null
+      );
   }
 }

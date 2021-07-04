@@ -13,14 +13,17 @@
         <ion-card-content>
           <div>
             <ion-text
+              [ngStyle]="{ 'font-size': '15px' }"
+              [innerHTML]="inquiry.keyword | autolink"
               color="dark"
-              [innerHTML]="inquiry.keyword"
-              [ngStyle]="{ 'font-size': '16px' }"
             ></ion-text>
           </div>
 
           <ion-list>
-            <ion-item-divider class="ion-no-padding">Rincian</ion-item-divider>
+            <ion-item-divider class="ion-no-padding">
+              <ion-label>Permintaan</ion-label>
+            </ion-item-divider>
+
             <ng-container
               *ngFor="let item of inquiry.items; let last = last; let i = index"
             >
@@ -30,7 +33,7 @@
                 </ion-note>
 
                 <ion-label
-                  [innerHTML]="item.label"
+                  [innerHTML]="item.label | autolink"
                   class="ion-text-wrap"
                 ></ion-label>
               </ion-item>
@@ -43,6 +46,7 @@
                 name="flame-outline"
                 slot="start"
                 color="danger"
+                mode="ios"
               ></ion-icon>
 
               <ion-text color="medium">
@@ -51,7 +55,12 @@
               </ion-text>
             </ion-button>
 
-            <ion-button (click)="showTool(inquiry)" class="ion-margin-left">
+            <ion-button
+              (click)="showTool(inquiry)"
+              class="ion-margin-left"
+              mode="ios"
+              color="medium"
+            >
               <ion-icon name="ellipsis-horizontal" slot="icon-only"></ion-icon>
             </ion-button>
           </ion-buttons>
@@ -67,17 +76,25 @@
     <ion-spinner></ion-spinner>
   </div>
 
-  <p
+  <div
     *ngIf="data?.status == 'loaded' && data?.results.length == 0"
     class="ion-text-center"
   >
-    <ion-text color="danger">
-      <small>
-        Belum ada permintaan. <br />
-        Tap tombol '+' untuk membuatnya.
-      </small>
-    </ion-text>
-  </p>
+    <p>
+      <ion-text>
+        Anda belum memiliki permintaan. <br />
+        Klik tombol <strong>'Kirim Permintaan'</strong> untuk membuatnya.
+      </ion-text>
+    </p>
+
+    <p>
+      <ion-text>
+        Pemilik bisnis / UMKM? <br />Klik <strong>'Ganti mode'</strong> pilih
+        <strong>'Bisnis'</strong> untuk submit bisnis Anda. Mini Loka membantu
+        bisnis lokal terhubung dengan konsumen.
+      </ion-text>
+    </p>
+  </div>
 </ng-container>
 
 <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">

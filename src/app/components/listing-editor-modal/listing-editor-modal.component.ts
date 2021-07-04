@@ -30,10 +30,10 @@ export class ListingEditorModalComponent implements OnInit {
   ngOnInit() {}
 
   dismiss() {
-    if (this.modalController.getTop()) {
-      this.modalController.dismiss({
-        dismissed: true,
-      });
-    }
+    this.modalController
+      .getTop()
+      .then((v) =>
+        v ? this.modalController.dismiss({ dimissed: true }) : null
+      );
   }
 }

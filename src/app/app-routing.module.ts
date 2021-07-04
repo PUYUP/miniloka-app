@@ -69,7 +69,24 @@ const routes: Routes = [
   },
   {
     path: 'propose-detail',
-    loadChildren: () => import('./pages/propose-detail/propose-detail.module').then( m => m.ProposeDetailPageModule)
+    loadChildren: () =>
+      import('./pages/propose-detail/propose-detail.module').then(
+        (m) => m.ProposeDetailPageModule
+      ),
+  },
+  {
+    path: 'order-detail',
+    loadChildren: () =>
+      import('./pages/order-detail/order-detail.module').then(
+        (m) => m.OrderDetailPageModule
+      ),
+  },
+  {
+    path: 'partner-detail',
+    loadChildren: () =>
+      import('./pages/partner-detail/partner-detail.module').then(
+        (m) => m.PartnerDetailPageModule
+      ),
   },
 ];
 @NgModule({

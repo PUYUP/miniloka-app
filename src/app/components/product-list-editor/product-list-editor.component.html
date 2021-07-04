@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title size="small">
+      {{ item ? "Rubah" : "Submit" }} Produk / Layanan
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <ion-item lines="full" class="ion-margin-bottom">
+      <ion-label position="stacked">Nama produk / layanan</ion-label>
+      <ion-input
+        formControlName="label"
+        placeholder="Contoh: Jagung bakar ceker"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item lines="full" class="ion-margin-bottom">
+      <ion-label position="stacked">Keterangan (tidak wajib)</ion-label>
+      <ion-textarea
+        [autoGrow]="autoGrow"
+        formControlName="description"
+        placeholder="Contoh: Dengan rasa ceker gurih"
+      ></ion-textarea>
+    </ion-item>
+
+    <ion-button
+      type="submit"
+      expand="block"
+      mode="ios"
+      color="secondary"
+      [disabled]="formGroup.invalid"
+    >
+      Submit
+    </ion-button>
+  </form>
+</ion-content>

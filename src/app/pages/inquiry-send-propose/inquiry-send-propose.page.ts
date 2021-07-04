@@ -5,6 +5,8 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from 'src/app/store/reducers';
 import { SelectPropose } from 'src/app/store/selectors/propose.selectors';
+import { OfferHistoryComponent } from './components/offer-history/offer-history.component';
+import { ProposeEditorComponent } from './components/propose-editor/propose-editor.component';
 
 @Component({
   selector: 'app-inquiry-send-propose',
@@ -14,8 +16,15 @@ import { SelectPropose } from 'src/app/store/selectors/propose.selectors';
 export class InquirySendProposePage implements OnInit {
   @ViewChild(IonContent, { static: true }) content: IonContent;
 
+  @ViewChild(ProposeEditorComponent)
+  proposeEditorComponent: ProposeEditorComponent;
+
+  @ViewChild(OfferHistoryComponent)
+  offerHistoryComponent: OfferHistoryComponent;
+
   inquiry_uuid: string;
   listing_uuid: string;
+
   propose$: Observable<any>;
 
   constructor(
@@ -34,5 +43,10 @@ export class InquirySendProposePage implements OnInit {
 
     this.listing_uuid =
       this.activatedRoute.snapshot.paramMap.get('listing_uuid');
+  }
+
+  doRefresh(event: any) {
+    this.proposeEditorComponent.refresh(event);
+    this.offerHistoryComponent.refresh();
   }
 }

@@ -28,6 +28,20 @@
 /* Leaflet */
 @import "~leaflet/dist/leaflet.css";
 
+body {
+  background-color: #ddd;
+}
+
 td {
   vertical-align: top;
+}
+
+.mobileapp {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+::placeholder {
+  font-size: 14px; //sets placeholder font size
 }

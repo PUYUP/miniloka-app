@@ -1,0 +1,159 @@
+<ng-container *ngIf="listing$ | async as listing">
+  <div
+    *ngIf="listing?.status == 'loading'"
+    class="ion-padding ion-margin ion-text-center"
+  >
+    <ion-spinner></ion-spinner>
+  </div>
+
+  <ng-container *ngIf="listing?.status == 'loaded'">
+    <table [ngStyle]="{ 'font-size': '14px' }">
+      <tr>
+        <td [ngStyle]="{ width: '125px' }">Nama</td>
+        <td class="ion-padding-start">
+          {{ listing?.result?.label }}
+        </td>
+      </tr>
+
+      <tr>
+        <td>Email</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.contact?.email
+              ? listing?.result?.contact?.email
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+
+      <tr>
+        <td>Telepon</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.contact?.telephone
+              ? listing?.result?.contact?.telephone
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+
+      <tr>
+        <td>WhatsApp</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.contact?.whatsapp
+              ? listing?.result?.contact?.whatsapp
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+    </table>
+
+    <br />
+
+    <table [ngStyle]="{ 'font-size': '14px' }">
+      <tr>
+        <td [ngStyle]="{ width: '125px' }">Alamat</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.location?.street_address
+              ? listing?.result?.location?.street_address
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+
+      <tr>
+        <td>Desa / Kelurahan</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.location?.administrative_area_level_4
+              ? listing?.result?.location?.administrative_area_level_4
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+
+      <tr>
+        <td>Kecamatan</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.location?.administrative_area_level_3
+              ? listing?.result?.location?.administrative_area_level_3
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+
+      <tr>
+        <td>Kota / Kabupaten</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.location?.administrative_area_level_2
+              ? listing?.result?.location?.administrative_area_level_2
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+
+      <tr>
+        <td>Provinsi</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.location?.administrative_area_level_1
+              ? listing?.result?.location?.administrative_area_level_1
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+
+      <tr>
+        <td>Kodepos</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.location?.postal_code
+              ? listing?.result?.location?.postal_code
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+
+      <tr>
+        <td>Latitude</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.location?.latitude
+              ? (listing?.result?.location?.latitude.toString() | slice: 0:10)
+              : "&mdash;"
+          }}
+        </td>
+
+        <td
+          *ngIf="listing?.result?.location?.latitude"
+          rowspan="2"
+          class="ion-padding-start"
+        >
+          <ion-button
+            mode="ios"
+            size="small"
+            color="secondary"
+            (click)="openMap(listing?.result?.location)"
+          >
+            <ion-text>Lihat Map</ion-text>
+          </ion-button>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Longitude</td>
+        <td class="ion-padding-start">
+          {{
+            listing?.result?.location?.longitude
+              ? (listing?.result?.location?.longitude.toString() | slice: 0:10)
+              : "&mdash;"
+          }}
+        </td>
+      </tr>
+    </table>
+  </ng-container>
+</ng-container>

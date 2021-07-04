@@ -32,11 +32,13 @@ export class HomePage {
   listings$: Observable<any>;
 
   actionSheetIsOpen: boolean = false;
-  inquiryEditorIsPresent: boolean = false;
 
-  mode = { icon: 'bag-outline', value: 'customer' };
-  locationCoords: any;
+  mode = { icon: 'accessibility-outline', value: 'customer' };
   refreshEvent: any;
+  locationCoords: any = {
+    latitude: 0,
+    longitude: 0,
+  };
 
   constructor(
     public actionSheetController: ActionSheetController,
@@ -49,29 +51,19 @@ export class HomePage {
     private locationAccuracy: LocationAccuracy,
     private store: Store<AppState>
   ) {
-    if (this.actionSheetController.getTop() || this.modalController.getTop()) {
-      this.platform.backButton.subscribeWithPriority(
-        10,
-        (processNextHandler) => {
-          if (this.actionSheetController.getTop()) {
-            this.actionSheetController.dismiss();
-          }
+    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+      // Hide modal
+      this.modalController
+        .getTop()
+        .then((v) => (v ? this.modalController.dismiss() : null));
 
-          if (this.modalController.getTop()) {
-            this.modalController.dismiss();
-          }
+      // Hide actionSheet
+      this.actionSheetController
+        .getTop()
+        .then((v) => (v ? this.actionSheetController.dismiss() : null));
 
-          processNextHandler();
-        }
-      );
-    }
-
-    this.locationCoords = {
-      latitude: '',
-      longitude: '',
-      accuracy: '',
-      timestamp: '',
-    };
+      processNextHandler();
+    });
 
     let accountMode = localStorage.getItem('account_mode');
     if (accountMode) {
@@ -123,17 +115,52 @@ export class HomePage {
     });
 
     await modal.present().then(() => {
-      this.inquiryEditorIsPresent = true;
-      if (this.loadingController.getTop) this.loadingController.dismiss();
+      this.loadingController
+        .getTop()
+        .then((v) => (v ? this.loadingController.dismiss() : null));
     });
 
     const { role } = await modal.onDidDismiss();
-    this.inquiryEditorIsPresent = false;
   }
 
   /**
    * GEOLOCATION
    */
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        this.showPosition,
+        this.showError
+      );
+    } else {
+      this.presentToast('Geolocation is not supported by this browser.');
+    }
+  }
+
+  showPosition = (position: any) => {
+    this.locationCoords.latitude = position.coords.latitude;
+    this.locationCoords.longitude = position.coords.longitude;
+
+    this.presentInquiryEditor();
+  };
+
+  showError = (error: any) => {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        this.presentToast('User denied the request for Geolocation.');
+        break;
+      case error.POSITION_UNAVAILABLE:
+        this.presentToast('Location information is unavailable.');
+        break;
+      case error.TIMEOUT:
+        this.presentToast('The request to get user location timed out.');
+        break;
+      case error.UNKNOWN_ERROR:
+        this.presentToast('An unknown error occurred.');
+        break;
+    }
+  };
+
   //Check if application having GPS access permission
   checkGPSPermission() {
     this.androidPermissions
@@ -195,8 +222,6 @@ export class HomePage {
       .then((resp) => {
         this.locationCoords.latitude = resp.coords.latitude;
         this.locationCoords.longitude = resp.coords.longitude;
-        this.locationCoords.accuracy = resp.coords.accuracy;
-        this.locationCoords.timestamp = resp.timestamp;
 
         // Show editor
         this.presentInquiryEditor();
@@ -215,10 +240,10 @@ export class HomePage {
       buttons: [
         {
           text: 'Konsumen',
-          icon: 'bag-outline',
+          icon: 'accessibility-outline',
           handler: () => {
             this.mode = {
-              icon: 'bag-outline',
+              icon: 'accessibility-outline',
               value: 'customer',
             };
 
@@ -261,9 +286,14 @@ export class HomePage {
   // END
 
   showInquiryEditor() {
-    this.presentLoading('Meminta lokasi...');
-    // this.presentInquiryEditor();
-    // this.checkGPSPermission();
+    // App
+    if (this.platform.is('cordova')) {
+      this.presentLoading('Meminta lokasi...');
+      // this.presentInquiryEditor();
+      // this.checkGPSPermission();
+    } else {
+      this.getLocation();
+    }
   }
 
   doRefresh(event: any) {

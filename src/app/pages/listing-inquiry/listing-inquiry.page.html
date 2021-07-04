@@ -4,8 +4,42 @@
       <ion-back-button></ion-back-button>
     </ion-buttons>
 
-    <ion-title size="small"> Permintaan </ion-title>
+    <ion-title size="small">
+      <ng-container *ngIf="listing$ | async as listing">
+        <ion-text *ngIf="listing?.status == 'loading'"> Loading... </ion-text>
+
+        <ng-container *ngIf="listing?.status == 'loaded'">
+          <ion-text> {{ listing.result?.label }} </ion-text>
+        </ng-container>
+      </ng-container>
+    </ion-title>
+
+    <ion-buttons slot="end" class="ion-padding-end">
+      <ion-button
+        size="small"
+        color="primary"
+        mode="ios"
+        [routerLink]="['/listing-detail', listing_uuid]"
+      >
+        Edit
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+
+  <ion-segment
+    (ionChange)="segmentChanged($event)"
+    mode="ios"
+    [ngStyle]="{'border-radius': 0}"
+    [value]="segment"
+  >
+    <ion-segment-button value="inquiry">
+      <ion-label>Permintaan</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="product">
+      <ion-label>Produk</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 </ion-header>
 
 <ion-content>
@@ -13,58 +47,57 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ng-container *ngIf="listing$ | async as listing">
-    <div
-      *ngIf="listing?.status == 'loading'"
-      class="ion-padding ion-margin ion-text-center"
-    >
-      <ion-spinner></ion-spinner>
-    </div>
-
-    <ng-container *ngIf="listing?.result?.uuid && listing?.status == 'loaded'">
-      <ion-item
-        *ngIf="listing?.result?.state?.status == 'pending'"
-        color="warning"
+  <ng-container *ngIf="segment == 'inquiry'">
+    <ng-container *ngIf="listing$ | async as listing">
+      <div
+        *ngIf="listing?.status == 'loading'"
+        class="ion-padding ion-margin ion-text-center"
       >
-        <ion-label class="ion-text-wrap">
-          Sedang diverifikasi 1 - 3 hari kerja
-          <p class="line">
-            <ion-text>
-              Untuk mempercepat verifikasi pastikan alamat bisnis dan kontak
-              yang diberikan bisa dihubungi. Klik "Edit" untuk melengkapinya.
-            </ion-text>
-          </p>
-        </ion-label>
-      </ion-item>
-
-      <ion-item lines="full" [ngStyle]="{'padding-top': '5px'}">
-        <label>
-          <div>{{ listing.result?.label }}</div>
-          <div [ngStyle]="{'margin-top': '2px', 'font-size': '12px'}">
-            <ion-text color="medium" size="small">
-              Kata kunci: {{ listing.result?.keyword }}
-            </ion-text>
-          </div>
-        </label>
-
-        <ion-buttons slot="end">
-          <ion-button
-            size="small"
-            mode="ios"
-            color="primary"
-            [routerLink]="['/listing-detail', listing_uuid]"
-          >
-            Edit
-          </ion-button>
-        </ion-buttons>
-      </ion-item>
-
-      <div *ngIf="showInquiry" class="ion-padding">
-        <app-inquiry-list-hunt
-          [keyword]="listing.result?.keyword"
-          [listing_uuid]="listing_uuid"
-        ></app-inquiry-list-hunt>
+        <ion-spinner></ion-spinner>
       </div>
+
+      <ng-container
+        *ngIf="listing?.result?.uuid && listing?.status == 'loaded' && segment == 'inquiry'"
+      >
+        <ion-item-divider
+          lines="full"
+          [ngStyle]="{'padding-top': '2px'}"
+          color="medium"
+          size="small"
+        >
+          <label class="ion-text-wrap">
+            Kata kunci: {{ listing.result?.keyword }}
+          </label>
+        </ion-item-divider>
+
+        <ion-item-divider
+          *ngIf="listing?.result?.status == 'pending'"
+          color="warning"
+        >
+          <ion-label class="ion-text-wrap">
+            Sedang diverifikasi 1 - 3 hari kerja
+            <p class="line">
+              <ion-text>
+                Untuk mempercepat verifikasi pastikan alamat bisnis dan kontak
+                yang diberikan bisa dihubungi. Klik "Edit" untuk melengkapinya.
+              </ion-text>
+            </p>
+          </ion-label>
+        </ion-item-divider>
+
+        <div *ngIf="showInquiry" class="ion-padding">
+          <app-inquiry-list-hunt
+            [keyword]="listing.result?.keyword"
+            [listing_uuid]="listing_uuid"
+          ></app-inquiry-list-hunt>
+        </div>
+      </ng-container>
     </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="segment == 'product'">
+    <div class="ion-padding">
+      <app-product-list [listing_uuid]="listing_uuid"></app-product-list>
+    </div>
   </ng-container>
 </ion-content>

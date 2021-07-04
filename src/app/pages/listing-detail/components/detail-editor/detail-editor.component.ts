@@ -22,7 +22,6 @@ export class DetailEditorComponent implements OnInit {
   ) {
     this.listing$ = this.store.pipe(select(SelectListing, { uuid: this.uuid }));
     this.listing$.subscribe((state: any) => {
-      console.log(state);
       if (state?.result?.is_updated) this.dismiss();
     });
   }
@@ -30,10 +29,10 @@ export class DetailEditorComponent implements OnInit {
   ngOnInit() {}
 
   dismiss() {
-    if (this.modalController.getTop()) {
-      this.modalController.dismiss({
-        dismissed: true,
-      });
-    }
+    this.modalController
+      .getTop()
+      .then((v) =>
+        v ? this.modalController.dismiss({ dimissed: true }) : null
+      );
   }
 }

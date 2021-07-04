@@ -18,6 +18,7 @@
         <ion-textarea
           formControlName="street_address"
           placeholder="Contoh: Jalan Biru Kuning No.11"
+          [autoGrow]="autoGrow"
         ></ion-textarea>
       </ion-item>
 
@@ -64,7 +65,12 @@
 
     <ion-row class="ion-no-padding ion-no-margin ion-margin-top">
       <ion-col size="7">
-        <ion-button type="button" (click)="addMapMarker()" fill="clear">
+        <ion-button
+          type="button"
+          (click)="addMapMarker()"
+          fill="clear"
+          mode="ios"
+        >
           <ion-icon slot="start" name="map-outline"></ion-icon>
           {{ selectedLatitude ? "Peta Ditandai" : "Tandai di Peta" }}
         </ion-button>
@@ -75,6 +81,8 @@
           type="submit"
           [disabled]="formGroup.invalid"
           class="ms-auto"
+          mode="ios"
+          color="secondary"
         >
           Simpan
         </ion-button>

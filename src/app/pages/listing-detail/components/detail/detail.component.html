@@ -9,7 +9,7 @@
         <tr>
           <td>Status</td>
           <td class="ion-padding-start">
-            {{ listing?.result?.state?.status_display }}
+            {{ listing?.result?.status_display }}
           </td>
         </tr>
 
@@ -70,6 +70,7 @@
         size="small"
         mode="ios"
         class="ion-margin-top"
+        color="secondary"
         (click)="editSummary(listing?.result)"
       >
         Edit
@@ -155,7 +156,7 @@
           <td class="ion-padding-start">
             {{
               listing?.result?.location?.latitude
-                ? listing?.result?.location?.latitude
+                ? (listing?.result?.location?.latitude.toString() | slice: 0:10)
                 : "&mdash;"
             }}
           </td>
@@ -166,7 +167,8 @@
           <td class="ion-padding-start">
             {{
               listing?.result?.location?.longitude
-                ? listing?.result?.location?.longitude
+                ? (listing?.result?.location?.longitude.toString()
+                  | slice: 0:10)
                 : "&mdash;"
             }}
           </td>
@@ -177,6 +179,7 @@
         size="small"
         mode="ios"
         class="ion-margin-top"
+        color="secondary"
         (click)="editAddress(listing?.result)"
       >
         Edit
@@ -188,6 +191,7 @@
     expand="block"
     color="danger"
     class="ion-margin-top"
+    mode="ios"
     (click)="delete(listing?.result)"
   >
     Hapus

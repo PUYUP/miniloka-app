@@ -24,6 +24,8 @@ import localeId from '@angular/common/locales/id';
 import { DEFAULT_TIMEOUT, HTTPInterceptor } from './http.interceptors';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './store/effects';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 registerLocaleData(localeId, 'id');
 
@@ -41,6 +43,12 @@ registerLocaleData(localeId, 'id');
     }),
     StoreModule.forRoot(AppReducers),
     EffectsModule.forRoot(AppEffects),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      // Register the ServiceWorker as soon as the app is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
   ],
   providers: [
     DatePipe,

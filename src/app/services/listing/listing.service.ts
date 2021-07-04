@@ -63,6 +63,7 @@ export class ListingService {
     const next = params?.next;
     const obtain = params?.obtain;
     const keyword = params?.keyword;
+    const visibility = params?.visibility;
 
     let url = environment.baseUrl + '/api/procure/v1/listings/';
     if (next) url = next;
@@ -70,6 +71,7 @@ export class ListingService {
     let httpParams = new HttpParams();
     if (obtain) httpParams = httpParams.set('obtain', obtain);
     if (keyword) httpParams = httpParams.set('keyword', keyword);
+    if (visibility) httpParams = httpParams.set('visibility', visibility);
 
     return this.httpClient
       .get(url, { params: httpParams })

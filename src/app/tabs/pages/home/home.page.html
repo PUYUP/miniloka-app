@@ -23,17 +23,31 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-fab
-    *ngIf="mode.value == 'customer'"
-    vertical="bottom"
-    horizontal="end"
-    slot="fixed"
-  >
-    <ion-fab-button size="small" (click)="showInquiryEditor()">
-      <ion-icon name="add"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+  <ng-container *ngIf="mode.value == 'customer'">
+    <ion-grid>
+      <ion-row class="ion-justify-content-between ion-align-items-center">
+        <ion-col>
+          <ion-text>Hay, butuh sesuatu?</ion-text>
+        </ion-col>
 
-  <app-inquiry-list *ngIf="mode.value == 'customer'"></app-inquiry-list>
-  <app-listing-list *ngIf="mode.value == 'business'"></app-listing-list>
+        <ion-col class="ion-text-right">
+          <ion-button
+            size="small"
+            color="secondary"
+            mode="ios"
+            (click)="showInquiryEditor()"
+          >
+            <ion-icon name="add-outline" slot="start"></ion-icon>
+            <ion-text>Kirim Permintaan</ion-text>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <app-inquiry-list></app-inquiry-list>
+  </ng-container>
+
+  <ng-container *ngIf="mode.value == 'business'">
+    <app-listing-list></app-listing-list>
+  </ng-container>
 </ion-content>

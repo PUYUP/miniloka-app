@@ -134,15 +134,17 @@ export class ListingEffects {
     this.actions$.pipe(
       ofType(Get),
       mergeMap((payload) => {
-        return this.listingService.doList().pipe(
-          map((response) => {
-            return GetSuccess({
-              results: response?.results,
-              next: response?.next,
-              previous: response?.previous,
-            });
-          })
-        );
+        return this.listingService
+          .doList({ visibility: payload?.visibility })
+          .pipe(
+            map((response) => {
+              return GetSuccess({
+                results: response?.results,
+                next: response?.next,
+                previous: response?.previous,
+              });
+            })
+          );
       })
     )
   );

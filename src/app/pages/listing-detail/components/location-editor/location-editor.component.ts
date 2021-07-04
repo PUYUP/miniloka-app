@@ -23,6 +23,7 @@ export class LocationEditorComponent implements OnInit {
   selectedLatitude: any;
   longitude: any;
   selectedLongitude: any;
+  autoGrow: boolean = false;
 
   constructor(
     public modalController: ModalController,
@@ -89,6 +90,10 @@ export class LocationEditorComponent implements OnInit {
     });
   }
 
+  ionViewDidEnter() {
+    this.autoGrow = true;
+  }
+
   async presentAlert(message: string) {
     const alert = await this.alertController.create({
       message: message,
@@ -128,6 +133,8 @@ export class LocationEditorComponent implements OnInit {
         location: { listing: this.listing.uuid, ...this.formGroup.value },
       })
     );
+
+    this.dismiss();
   }
 
   async addMapMarker() {
@@ -159,12 +166,12 @@ export class LocationEditorComponent implements OnInit {
   }
 
   dismiss() {
-    if (this.modalController.getTop) {
+    this.modalController.getTop().then((v) => {
       // using the injected ModalController this page
       // can "dismiss" itself and optionally pass back data
       this.modalController.dismiss({
         dismissed: true,
       });
-    }
+    });
   }
 }

@@ -11,7 +11,7 @@
     <ion-item class="ion-margin-top">
       <ion-label position="stacked">Kata kunci</ion-label>
       <ion-textarea
-        [autoGrow]="true"
+        [autoGrow]="autoGrow"
         formControlName="keyword"
         placeholder="Contoh: motor bengkel servis"
       ></ion-textarea>
@@ -48,7 +48,7 @@
     <ion-item class="ion-margin-top">
       <ion-label position="stacked">Keterangan (tidak wajib)</ion-label>
       <ion-textarea
-        [autoGrow]="true"
+        [autoGrow]="autoGrow"
         formControlName="description"
         placeholder="Contoh: Menyediakan beragam kemplang pedas manis"
       ></ion-textarea>
@@ -56,7 +56,13 @@
     -->
   </ion-list>
 
-  <ion-button expand="block" type="submit" [disabled]="formGroup.invalid">
+  <ion-button
+    expand="block"
+    type="submit"
+    [disabled]="formGroup.invalid"
+    mode="ios"
+    color="secondary"
+  >
     <ng-container *ngIf="submitLoading">
       <ion-spinner name="dots"></ion-spinner>
     </ng-container>

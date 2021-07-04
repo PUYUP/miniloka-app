@@ -9,6 +9,7 @@ import {
 } from 'src/app/store/interfaces/auth.interfaces';
 import { environment } from 'src/environments/environment';
 import { PersonService } from '../person/person.service';
+import { Platform } from '@ionic/angular';
 
 const CREDENTIAL = '@credential';
 const TOKEN = '@token';
@@ -18,7 +19,11 @@ const USER = '@user';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private httpClient: HttpClient, private firebaseX: FirebaseX) {}
+  constructor(
+    private httpClient: HttpClient,
+    private firebaseX: FirebaseX,
+    private platform: Platform
+  ) {}
 
   public storeCredential(credential: any) {
     localStorage.setItem(CREDENTIAL, JSON.stringify(credential));
@@ -67,7 +72,7 @@ export class AuthService {
     localStorage.setItem(USER, JSON.stringify(user));
 
     // generate and save fcm token
-    this.generateFcmToken();
+    if (this.platform.is('cordova')) this.generateFcmToken();
   }
 
   // LOGIN

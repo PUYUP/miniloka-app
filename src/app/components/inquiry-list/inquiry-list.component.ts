@@ -47,22 +47,19 @@ export class InquiryListComponent implements OnInit {
       }
     });
 
-    if (this.actionSheetController.getTop() || this.modalController.getTop()) {
-      this.platform.backButton.subscribeWithPriority(
-        10,
-        (processNextHandler) => {
-          if (this.actionSheetController.getTop()) {
-            this.actionSheetController.dismiss();
-          }
+    this.platform.backButton.subscribeWithPriority(10, (processNextHandler) => {
+      // Hide actionSheet
+      this.actionSheetController
+        .getTop()
+        .then((v) => (v ? this.actionSheetController.dismiss() : null));
 
-          if (this.modalController.getTop()) {
-            this.modalController.dismiss();
-          }
+      // Hide modal
+      this.modalController
+        .getTop()
+        .then((v) => (v ? this.modalController.dismiss() : null));
 
-          processNextHandler();
-        }
-      );
-    }
+      processNextHandler();
+    });
   }
 
   ngOnInit() {}

@@ -31,11 +31,12 @@ export class SecurityEditorComponent implements OnInit {
     public store: Store<AppState>,
     private platform: Platform
   ) {
-    if (this.modalController.getTop()) {
-      this.platform.backButton.subscribeWithPriority(10, () => {
-        this.dismiss();
-      });
-    }
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      // Hide modal
+      this.modalController
+        .getTop()
+        .then((v) => (v ? this.modalController.dismiss() : null));
+    });
 
     this.securecode$ = this.store.pipe(select(SelectSecureCode));
     this.securecode$.subscribe((payload: any) => {
@@ -116,8 +117,10 @@ export class SecurityEditorComponent implements OnInit {
   }
 
   dismiss() {
-    this.modalController.dismiss({
-      dismissed: true,
-    });
+    this.modalController
+      .getTop()
+      .then((v) =>
+        v ? this.modalController.dismiss({ dimissed: true }) : null
+      );
   }
 }

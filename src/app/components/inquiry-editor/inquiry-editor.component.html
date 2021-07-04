@@ -1,16 +1,5 @@
 <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" #formDirective="ngForm">
   <ion-list lines="full">
-    <ion-item>
-      <ion-label position="stacked" class="ion-text-wrap">
-        Kata kunci
-      </ion-label>
-
-      <ion-textarea
-        formControlName="keyword"
-        placeholder="Contoh: kuliner lesehan"
-      ></ion-textarea>
-    </ion-item>
-
     <!-- LIST ITEMS -->
     <ion-item class="items">
       <ion-label position="stacked">Permintaan</ion-label>
@@ -24,7 +13,7 @@
             <span>{{ i + 1 }}.</span>
             <ion-textarea
               (ionChange)="myInputChange($event, i)"
-              [autoGrow]="true"
+              [autoGrow]="autoGrow"
               formControlName="label"
               placeholder="Tulis disini"
               rows="1"
@@ -36,7 +25,12 @@
               [ngStyle]="{ 'margin-left': '0' }"
               class="add-button"
             >
-              <ion-button color="danger" (click)="removeItem(i)" size="small">
+              <ion-button
+                color="danger"
+                (click)="removeItem(i)"
+                size="small"
+                mode="ios"
+              >
                 <ion-icon name="close-outline" slot="icon-only"></ion-icon>
               </ion-button>
             </ion-buttons>
@@ -50,7 +44,7 @@
         <ion-textarea
           [(ngModel)]="itemValue"
           [ngModelOptions]="{ standalone: true }"
-          [autoGrow]="itemValue ? true : false"
+          [autoGrow]="autoGrow"
           placeholder="Tulis disini"
           rows="1"
           #myInput
@@ -61,22 +55,45 @@
           [ngStyle]="{ 'margin-left': '0' }"
           class="add-button"
         >
-          <ion-button color="dark" (click)="addItem()" size="small">
+          <ion-button color="dark" (click)="addItem()" size="small" mode="ios">
             <ion-icon name="checkmark-outline" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-buttons>
       </div>
     </ion-item>
 
+    <ion-item class="ion-margin-top">
+      <ion-label position="stacked" class="ion-text-wrap">
+        Kata kunci
+      </ion-label>
+
+      <ion-textarea
+        formControlName="keyword"
+        [autoGrow]="autoGrow"
+        placeholder="Contoh: kuliner lesehan. Ini membantu bisnis lokal menemukan permintaan Anda"
+      ></ion-textarea>
+    </ion-item>
+
     <ion-row class="ion-margin-top ion-align-items-center">
       <ion-col size="6">
-        <ion-button type="submit" [disabled]="formGroup.invalid">
+        <ion-button
+          type="submit"
+          [disabled]="formGroup.invalid"
+          mode="ios"
+          color="secondary"
+        >
           Kirim
         </ion-button>
       </ion-col>
 
       <ion-col size="6" class="ion-text-end">
-        <ion-button mode="ios" size="small" fill="clear" (click)="showHowTo()">
+        <ion-button
+          mode="ios"
+          size="small"
+          fill="clear"
+          (click)="showHowTo()"
+          color="primary"
+        >
           <ion-icon name="help-circle-outline" slot="start"></ion-icon>
           <ion-text>Baca petunjuk</ion-text>
         </ion-button>

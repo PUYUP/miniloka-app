@@ -51,4 +51,8 @@ export class OfferHistoryComponent implements OnInit {
 
     this.loadMoreEvent.target.disabled = !this.next ? true : false;
   }
+
+  refresh() {
+    this.store.dispatch(GetHistory({ inquiry_uuid: this.inquiry_uuid }));
+  }
 }

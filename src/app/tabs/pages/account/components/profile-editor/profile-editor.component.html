@@ -26,15 +26,17 @@
         <ion-textarea
           formControlName="address"
           placeholder="Contoh: Jalan lingkaran jaya no 11"
+          [autoGrow]="autoGrow"
         ></ion-textarea>
       </ion-item>
     </ion-list>
 
     <ion-button
       type="submit"
-      color="primary"
+      color="secondary"
       expand="block"
       class="ion-margin-top"
+      mode="ios"
     >
       Submit
     </ion-button>

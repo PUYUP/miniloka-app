@@ -8,7 +8,10 @@ import {
 import { inquiryReducer, InquiryState } from './inquiry.reducers';
 import { listingReducer, ListingState } from './listing.reducers';
 import { offerReducer, OfferState } from './offer.reducers';
+import { orderReducer, OrderState } from './order.reducers';
+import { partnerReducer, PartnerState } from './partner.reducers';
 import { personReducer, PersonState } from './person.reducers';
+import { productReducer, ProductState } from './product.reducers';
 import { proposeReducer, ProposeState } from './propose.reducers';
 import {
   securecodeReducer,
@@ -28,6 +31,9 @@ export interface AppState {
   listing: ListingState;
   propose: ProposeState;
   offer: OfferState;
+  order: OrderState;
+  product: ProductState;
+  partner: PartnerState;
 }
 
 // REDUCERS
@@ -41,4 +47,7 @@ export const AppReducers: ActionReducerMap<AppState> = {
   listing: listingReducer,
   propose: proposeReducer,
   offer: offerReducer,
+  order: orderReducer,
+  product: productReducer,
+  partner: partnerReducer,
 };

@@ -17,14 +17,17 @@
       <ion-card-content>
         <div>
           <ion-text
+            [ngStyle]="{ 'font-size': '15px' }"
+            [innerHTML]="inquiry?.result?.keyword | autolink"
             color="dark"
-            [innerHTML]="inquiry?.result?.keyword"
-            [ngStyle]="{ 'font-size': '16px' }"
           ></ion-text>
         </div>
 
         <ion-list>
-          <ion-item-divider class="ion-no-padding">Rincian</ion-item-divider>
+          <ion-item-divider class="ion-no-padding">
+            <ion-label>Permintaan</ion-label>
+          </ion-item-divider>
+
           <ng-container
             *ngFor="
               let item of inquiry?.result?.items;
@@ -32,37 +35,18 @@
               let i = index
             "
           >
-            <ion-item lines="full">
+            <ion-item lines="{{ last ? 'none' : 'full' }}">
               <ion-note slot="start" [ngStyle]="{ 'margin-right': '5px' }">
                 {{ i + 1 }}
               </ion-note>
 
               <ion-label
-                [innerHTML]="item.label"
+                [innerHTML]="item.label | autolink"
                 class="ion-text-wrap"
               ></ion-label>
             </ion-item>
           </ng-container>
         </ion-list>
-
-        <ion-buttons>
-          <ion-button>
-            <ion-icon
-              name="flame-outline"
-              slot="start"
-              color="danger"
-            ></ion-icon>
-
-            <ion-text color="medium">
-              {{
-                inquiry?.result?.propose_count
-                  ? inquiry?.result?.propose_count
-                  : 0
-              }}
-              penawaran
-            </ion-text>
-          </ion-button>
-        </ion-buttons>
       </ion-card-content>
     </ion-card>
   </ng-container>

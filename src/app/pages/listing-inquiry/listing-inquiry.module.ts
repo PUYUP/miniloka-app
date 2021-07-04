@@ -8,6 +8,7 @@ import { ListingInquiryPageRoutingModule } from './listing-inquiry-routing.modul
 
 import { ListingInquiryPage } from './listing-inquiry.page';
 import { InquiryListHuntComponent } from 'src/app/components/inquiry-list-hunt/inquiry-list-hunt.component';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
   imports: [
@@ -15,6 +16,7 @@ import { InquiryListHuntComponent } from 'src/app/components/inquiry-list-hunt/i
     FormsModule,
     IonicModule,
     ListingInquiryPageRoutingModule,
+    SharedModule,
   ],
   declarations: [ListingInquiryPage, InquiryListHuntComponent],
   entryComponents: [InquiryListHuntComponent],

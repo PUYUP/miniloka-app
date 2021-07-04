@@ -9,6 +9,7 @@ import { InquirySendProposePageRoutingModule } from './inquiry-send-propose-rout
 import { InquirySendProposePage } from './inquiry-send-propose.page';
 import { ProposeEditorComponent } from './components/propose-editor/propose-editor.component';
 import { OfferHistoryComponent } from './components/offer-history/offer-history.component';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { OfferHistoryComponent } from './components/offer-history/offer-history.
     ReactiveFormsModule,
     IonicModule,
     InquirySendProposePageRoutingModule,
+    SharedModule,
   ],
   declarations: [
     InquirySendProposePage,
